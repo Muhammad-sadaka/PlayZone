@@ -1,6 +1,8 @@
-﻿using System;
-using System.Data;
-using PlayZone_DataAccess;
+﻿using PlayZone_DataAccessEF.Data;
+using SharedDTOs;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PlayZone_Buisness
 {
@@ -9,105 +11,106 @@ namespace PlayZone_Buisness
         public enum enMode { AddNew = 0, Update = 1 }
         public enMode Mode = enMode.AddNew;
 
-        public int? ReservationID { set; get; }
+        public int ReservationID { set; get; }
         public string CustomerName { set; get; }
         public DateTime? StartDate { set; get; }
         public DateTime? EndDate { set; get; }
         public TimeSpan? Period { set; get; }
         public decimal? TotalPrice { set; get; }
-        public int? SpotTypeID { set; get; }
+        public int SpotTypeID { set; get; }
+
+        public ReservationDTO Dto => new ReservationDTO(
+            this.ReservationID,
+            this.CustomerName,
+            this.StartDate,
+            this.EndDate,
+            this.Period,
+            this.TotalPrice,
+            this.SpotTypeID,
+            string.Empty, // اسم نوع البقعة يتم جلبه تلقائياً في الاستعلامات المركبة
+            0
+        );
+
+
 
         public clsReservation()
         {
-            this.ReservationID = null;
-            this.CustomerName = "";
+            this.ReservationID = 0;
+            this.CustomerName = string.Empty;
             this.StartDate = null;
             this.EndDate = null;
             this.Period = null;
             this.TotalPrice = null;
-            this.SpotTypeID = null;
+            this.SpotTypeID = 0;
 
             Mode = enMode.AddNew;
         }
 
-        private clsReservation(int? ReservationID, string CustomerName, DateTime? StartDate, DateTime? EndDate, TimeSpan? Period, decimal? TotalPrice, int? SpotTypeID)
+        private clsReservation(ReservationDTO dto, enMode mode = enMode.Update)
         {
-            this.ReservationID = ReservationID;
-            this.CustomerName = CustomerName;
-            this.StartDate = StartDate;
-            this.EndDate = EndDate;
-            this.Period = Period;
-            this.TotalPrice = TotalPrice;
-            this.SpotTypeID = SpotTypeID;
+            this.ReservationID = dto.ReservationId;
+            this.CustomerName = dto.CustomerName;
+            this.StartDate = dto.StartDate;
+            this.EndDate = dto.EndDate;
+            this.Period = dto.Period;
+            this.TotalPrice = dto.TotalPrice;
+            this.SpotTypeID = dto.SpotTypeId;
 
-            Mode = enMode.Update;
+            Mode = mode;
         }
 
-        private bool _AddNewReservation()
+        private async Task<bool> _AddNewReservationAsync()
         {
-            this.ReservationID = clsReservationsDataAccess.AddNewReservation(this.CustomerName, this.StartDate, this.EndDate, this.Period, this.TotalPrice, this.SpotTypeID);
-            return (this.ReservationID != null);
+            this.ReservationID = await ReservationData.AddAsync(this.Dto);
+            return (this.ReservationID > 0);
         }
 
-        private bool _UpdateReservation()
+        private async Task<bool> _UpdateReservationAsync()
         {
-            return clsReservationsDataAccess.UpdateReservation(this.ReservationID, this.CustomerName, this.StartDate, this.EndDate, this.Period, this.TotalPrice, this.SpotTypeID) ?? false;
+            return await ReservationData.UpdateAsync(this.Dto);
         }
 
-        public static clsReservation FindByID(int? ReservationID)
+        public static async Task<clsReservation?> FindByIDAsync(int reservationID)
         {
-            if (ReservationID == null) return null;
+            ReservationDTO? dto = await ReservationData.GetByIdAsync(reservationID);
 
-            string CustomerName = "";
-            DateTime? StartDate = null;
-            DateTime? EndDate = null;
-            TimeSpan? Period = null;
-            decimal? TotalPrice = null;
-            int? SpotTypeID = null;
-
-            bool? IsFound = clsReservationsDataAccess.GetReservationInfoByID(ReservationID, ref CustomerName, ref StartDate, ref EndDate, ref Period, ref TotalPrice, ref SpotTypeID);
-
-            if (IsFound == true)
-                return new clsReservation(ReservationID, CustomerName, StartDate, EndDate, Period, TotalPrice, SpotTypeID);
+            if (dto != null)
+                return new clsReservation(dto, enMode.Update);
             else
                 return null;
         }
 
-        public bool Save()
+        public async Task<bool> SaveAsync()
         {
             switch (Mode)
             {
                 case enMode.AddNew:
-                    if (_AddNewReservation())
+                    if (await _AddNewReservationAsync())
                     {
                         Mode = enMode.Update;
                         return true;
                     }
-                    else
-                    {
-                        return false;
-                    }
+                    return false;
 
                 case enMode.Update:
-                    return _UpdateReservation();
+                    return await _UpdateReservationAsync();
             }
             return false;
         }
 
-        public static DataTable GetAllReservations()
+        public static async Task<List<ReservationListDTO>> GetAllReservationsAsync()
         {
-            return clsReservationsDataAccess.GetAllReservations();
+            return await ReservationData.GetAllAsync();
         }
 
-        public static bool DeleteReservation(int? ReservationID)
+        public static async Task<bool> DeleteReservationAsync(int reservationID)
         {
-            return clsReservationsDataAccess.DeleteReservation(ReservationID);
+            return await ReservationData.DeleteAsync(reservationID);
         }
 
-        public static bool IsReservationExist(int? ReservationID)
+        public static async Task<bool> IsReservationExistAsync(int reservationID)
         {
-            return clsReservationsDataAccess.IsReservationExist(ReservationID) ?? false;
+            return await ReservationData.ExistsAsync(reservationID);
         }
     }
 }
-

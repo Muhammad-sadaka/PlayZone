@@ -1,6 +1,7 @@
-﻿using System;
-using System.Data;
-using PlayZone_DataAccess;
+﻿using PlayZone_DataAccessEF.Data;
+using SharedDTOs;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PlayZone_Buisness
 {
@@ -9,115 +10,103 @@ namespace PlayZone_Buisness
         public enum enMode { AddNew = 0, Update = 1 };
         public enMode Mode = enMode.AddNew;
 
-        public int SpotTypeID { set; get; }
-        public string SpotTypeName { set; get; }
-        public Decimal PricePerHour { set; get; }
-        public string ImagePath { set; get; }
+        public SpotTypeDTO Dto => new SpotTypeDTO(this.SpotTypeID, this.SpotTypeName, this.PricePerHour, this.ImagePath);
 
+        public int? SpotTypeID { get; set; }
+        public string SpotTypeName { get; set; }
+        public decimal? PricePerHour { get; set; }
+        public string ImagePath { get; set; }
 
         public clsSpotType()
         {
-            this.SpotTypeID = -1;
-            this.SpotTypeName = "";
-            this.PricePerHour = -1;
-            this.ImagePath = "";
-
+            SpotTypeID = -1;
+            SpotTypeName = string.Empty;
+            PricePerHour = -1;
+            ImagePath = string.Empty;
             Mode = enMode.AddNew;
-
         }
 
-        private clsSpotType(int SpotTypeID, string SpotName, Decimal PricePerHour, string ImagePath)
+        private clsSpotType(SpotTypeDTO dto, enMode mode = enMode.Update)
         {
-            this.SpotTypeID = SpotTypeID;
-            this.SpotTypeName = SpotName;
-            this.PricePerHour = PricePerHour;
-            this.ImagePath = ImagePath;
-
-            Mode = enMode.Update;
+            SpotTypeID = dto.SpotTypeID;
+            SpotTypeName = dto.SpotTypeName;
+            PricePerHour = dto.PricePerHour;
+            ImagePath = dto.ImagePath;
+            Mode = mode;
         }
 
-        private bool _AddNewSpotType()
+        private async Task<bool> _AddNewSpotTypeAsync()
         {
-            //call DataAccess Layer 
-
-            this.SpotTypeID = clsSpotTypesDataAccess.AddNewSpotType(this.SpotTypeName,this.PricePerHour,this.ImagePath);
-
+            this.SpotTypeID = await SpotTypeData.AddAsync(this.Dto);
             return (this.SpotTypeID != -1);
         }
 
-        private bool _UpdateSpotType()
+        private async Task<bool> _UpdateSpotTypeAsync()
         {
-            return clsSpotTypesDataAccess.UpdateSpotType(this.SpotTypeID, this.SpotTypeName, this.PricePerHour, this.ImagePath);
+            return await SpotTypeData.UpdateAsync(this.Dto);
         }
 
-        public static clsSpotType FindByID(int SpotTypeID)
+        public static async Task<clsSpotType?> FindByIDAsync(int spotTypeID)
         {
-            string ImagePath = "";
-            Decimal PricePerHour = -1;
-            string SpotName = "";
+            SpotTypeDTO? dto = await SpotTypeData.GetByIdAsync(spotTypeID);
 
-            bool IsFound = clsSpotTypesDataAccess.GetSpotTypeInfoBySpotTypeID( SpotTypeID, ref SpotName, ref PricePerHour, ref ImagePath);
-
-            if (IsFound)
-                return new clsSpotType(SpotTypeID, SpotName, PricePerHour, ImagePath);
-            else
-                return null;
-
-        }
-
-        public static clsSpotType FindByName(string SpotName)
-        {
-            string ImagePath = "";
-            Decimal PricePerHour = -1;
-            int SpotTypeID = -1;
-
-            bool IsFound = clsSpotTypesDataAccess.GetSpotTypeInfoByName(ref SpotTypeID, SpotName, ref PricePerHour, ref ImagePath);
-            if (IsFound)
-                return new clsSpotType(SpotTypeID, SpotName, PricePerHour, ImagePath);
+            if (dto != null)
+                return new clsSpotType(dto, enMode.Update);
             else
                 return null;
         }
 
-        public bool Save()
+        public async Task<bool> SaveAsync()
         {
             switch (Mode)
             {
                 case enMode.AddNew:
-                    if (_AddNewSpotType())
+                    if (await _AddNewSpotTypeAsync())
                     {
                         Mode = enMode.Update;
                         return true;
                     }
-                    else
-                    {
-                        return false;
-                    }
+                    return false;
 
                 case enMode.Update:
-                    return _UpdateSpotType();
+                    return await _UpdateSpotTypeAsync();
             }
             return false;
         }
 
-        public static DataTable GetAllSpotType()
+        public static async Task<List<SpotTypeDTO>> GetAllSpotTypesAsync()
         {
-            return clsSpotTypesDataAccess.GetAllSpotTypes();
+            return await SpotTypeData.GetAllAsync();
         }
 
-        public static bool DeleteSpotType(int SpotTypeID)
+        public static async Task<bool> DeleteSpotTypeAsync(int spotTypeID)
         {
-            return clsSpotTypesDataAccess.DeleteSpotType(SpotTypeID);
+            return await SpotTypeData.DeleteAsync(spotTypeID);
         }
 
-        public static bool IsSpotTypeExist(int SpotTypeID)
+        public static async Task<bool> IsSpotTypeExistAsync(int spotTypeID)
         {
-            return clsSpotTypesDataAccess.IsSpotTypeExist(SpotTypeID);
+            return await SpotTypeData.ExistsAsync(spotTypeID);
         }
-
-        public static bool IsSpotTypeExist(string SpotName)
-        {
-            return clsSpotTypesDataAccess.IsSpotTypeExist(SpotName);
-        }
-
     }
 }
+
+///how to use the clsSpotType class in an ASP.NET Core Web API controller:
+//[ApiController]
+//[Route("api/[controller]")]
+//public class SpotTypesController : ControllerBase
+//{
+//    private readonly SpotTypeData _spotTypeData;
+
+//    public SpotTypesController(SpotTypeData spotTypeData)
+//    {
+//        _spotTypeData = spotTypeData; // يتم حقنها تلقائياً من الـ Program.cs
+//    }
+
+//    [HttpGet]
+//    public async Task<IActionResult> GetAll()
+//    {
+//        var list = await clsSpotType.GetAllSpotTypesAsync(_spotTypeData);
+//        return Ok(list);
+//    }
+//}

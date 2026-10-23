@@ -1,16 +1,18 @@
-﻿using System;
+﻿using PlayZone_Buisness;
+using SharedDTOs;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Timers;
-using PlayZone_Buisness;
+using System.Windows.Forms;
 using System.Xml.Linq;
-using System.IO;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 
 
@@ -18,11 +20,18 @@ namespace PlayZone
 {
     public partial class ctrlSpot : UserControl
     {
-        enum enMode {  Start = 0, Pause = 1  }
+        enum enMode { Start = 0, Pause = 1 }
 
         enMode Mode = enMode.Start;
 
         string PlayerName = null;
+
+        public ctrlSpot()
+        {
+            InitializeComponent();
+        }
+
+
 
         clsSpotType SpotType = new clsSpotType();
 
@@ -79,15 +88,11 @@ namespace PlayZone
                 return;
 
             _UpdateReservation();
-            MessageBox.Show($"\nSpot Type: {SpotType.SpotTypeName}\nSpot Number: {this.Tag}\nDuration of play: {reservation.Period}\nPrice Per Hour: {SpotType.PricePerHour}\nTotal Price: {reservation.TotalPrice}","Reservation Details",MessageBoxButtons.OK);
+            MessageBox.Show($"\nSpot Type: {SpotType.SpotTypeName}\nSpot Number: {this.Tag}\nDuration of play: {reservation.Period}\nPrice Per Hour: {(int)SpotType.PricePerHour}\nTotal Price: {(int)reservation.TotalPrice}", "Reservation Details", MessageBoxButtons.OK);
             ResetControl();
         }
 
-        public ctrlSpot()
-        {
-            InitializeComponent();
-        }
-
+       
         private void ctrlSpot_Load(object sender, EventArgs e)
         {
             lblSpotNumber.Text = this.Tag?.ToString();
@@ -96,13 +101,11 @@ namespace PlayZone
                 cbSpotTypes.SelectedIndex = 0;
         }
 
-        private void _FillSpotTypesInComboBox()
+        private async void _FillSpotTypesInComboBox()
         {
-            DataTable dtCountries = clsSpotType.GetAllSpotType();
-            foreach (DataRow row in dtCountries.Rows)
-            {
-                cbSpotTypes.Items.Add(row["SpotTypeName"]);
-            }
+            cbSpotTypes.DataSource = await clsSpotType.GetAllSpotTypesAsync(); 
+            cbSpotTypes.DisplayMember = "SpotTypeName"; 
+            cbSpotTypes.ValueMember = "SpotTypeId";     
         }
 
         private void btnONOFF_Click(object sender, EventArgs e)
@@ -124,15 +127,14 @@ namespace PlayZone
             }
         }
 
-        private void _LoadSpotTypeInfo()
+        private async void _LoadSpotTypeInfo()
         {
-            SpotType = clsSpotType.FindByID(cbSpotTypes.SelectedIndex + 1);
-            string ImagePath = SpotType.ImagePath;
-            if (ImagePath != "")
-                if (File.Exists(ImagePath))
-                    pictureBox1.ImageLocation = ImagePath;
+            SpotType = await clsSpotType.FindByIDAsync(cbSpotTypes.SelectedIndex + 1);
+            if (SpotType.ImagePath != "")
+                if (File.Exists(SpotType.ImagePath))
+                    pictureBox1.ImageLocation = SpotType.ImagePath;
                 else
-                    MessageBox.Show("Could not find this image: = " + ImagePath, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Could not find this image: = " + SpotType.ImagePath, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void cbSpotTypes_SelectedIndexChanged(object sender, EventArgs e)
@@ -140,14 +142,14 @@ namespace PlayZone
             _LoadSpotTypeInfo();
         }
 
-        public void LoadControl()
+        public async void LoadControl()
         {
             if (SpotType == null)
-                SpotType = clsSpotType.FindByID(1);
-            cbSpotTypes.Items.Clear();
+                 SpotType = await clsSpotType.FindByIDAsync(1);
+            //cbSpotTypes.Items.Clear();
             _FillSpotTypesInComboBox();
             if (cbSpotTypes.Items.Count > 0)
-                cbSpotTypes.SelectedIndex = SpotType.SpotTypeID - 1;
+                cbSpotTypes.SelectedIndex = SpotType.SpotTypeID.Value - 1;
             _LoadSpotTypeInfo();
 
         }
@@ -163,24 +165,25 @@ namespace PlayZone
             PlayerName = null;
             cbSpotTypes.Enabled = true;
             reservation = new clsReservation();
+            lblTimer.Text = "00:00:00";
         }
 
-        void _AddNewReservation()
+        async void _AddNewReservation()
         {
             reservation.CustomerName = lblSpotName.Text;
             reservation.StartDate = DateTime.Now;
             reservation.SpotTypeID = cbSpotTypes.SelectedIndex + 1;
-            if (!reservation.Save())
+            if (!await reservation.SaveAsync())
                 MessageBox.Show("Add Reservation did not Successfull", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        void _UpdateReservation()
+        async void _UpdateReservation()
         {
             reservation.EndDate = DateTime.Now;
-            reservation.Period =   reservation.EndDate - reservation.StartDate;
+            reservation.Period = reservation.EndDate - reservation.StartDate;
             reservation.TotalPrice = SpotType.PricePerHour * (Convert.ToDecimal(TotalSeconds) / 60 / 60);
             reservation.Mode = clsReservation.enMode.Update;
-            if (!reservation.Save())
+            if (!await reservation.SaveAsync())
                 MessageBox.Show("Update Reservation did not Successfull", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
         }

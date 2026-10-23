@@ -26,10 +26,10 @@ namespace PlayZone
             _LoadSpotTypeInfo(1);
         }
 
-        private void _LoadSpotTypeInfo(int SpotTypeID)
+        async void _LoadSpotTypeInfo(int SpotTypeID)
         {
-            if (clsSpotType.IsSpotTypeExist(SpotTypeID))
-                SpotType = clsSpotType.FindByID(SpotTypeID);
+            if (await clsSpotType.IsSpotTypeExistAsync(SpotTypeID))
+                SpotType = await clsSpotType.FindByIDAsync(SpotTypeID);
 
             if(SpotType != null)
             {
@@ -41,15 +41,13 @@ namespace PlayZone
 
         }
 
-        private void _FillSpotTypesInComboBox()
+        private async void _FillSpotTypesInComboBox()
         {
-            DataTable dtCountries = clsSpotType.GetAllSpotType();
-            foreach (DataRow row in dtCountries.Rows)
-            {
-                cbSpotTypes.Items.Add(row["SpotTypeName"]);
-            }
-            if (cbSpotTypes.Items.Count > 0)
-                cbSpotTypes.SelectedIndex = 0;
+            var spotTypesList = await clsSpotType.GetAllSpotTypesAsync();
+
+            cbSpotTypes.DataSource = spotTypesList;
+            cbSpotTypes.DisplayMember = "SpotTypeName";
+            cbSpotTypes.ValueMember = "SpotTypeId";      
         }
 
         private void _LoadSpotTypeImage()
@@ -87,7 +85,7 @@ namespace PlayZone
             }
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private async void btnSave_Click(object sender, EventArgs e)
         {
             if (!_HandlePersonImage())
                 return;
@@ -98,7 +96,7 @@ namespace PlayZone
             if (pictureBox1.ImageLocation != null)
                 SpotType.ImagePath = pictureBox1.ImageLocation;
 
-            if (SpotType.Save())
+            if (await SpotType.SaveAsync())
                 MessageBox.Show("Spot Type Updated Successfuly", "Updated", MessageBoxButtons.OK,MessageBoxIcon.Information); 
             else
                 MessageBox.Show("Spot Type did not Updated Successfuly", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);

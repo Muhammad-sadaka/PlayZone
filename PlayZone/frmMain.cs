@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using PlayZone_Buisness;
+using PlayZone_DataAccessEF.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,6 +22,11 @@ namespace PlayZone
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            //foreach (Control ctrl in this.Controls)    /// Check if all the spots unused
+            //{
+            //    if (ctrl is ctrlSpot ctrl1)
+            //        ctrl1.IsDone();
+            //}
             this.Close();
         }
 
@@ -26,7 +34,7 @@ namespace PlayZone
         {
             frmSettings frm = new frmSettings();
             frm.ShowDialog();
-            foreach(Control ctrl in this.Controls)
+            foreach (Control ctrl in this.Controls)
             {
                 if (ctrl is ctrlSpot ctrl1)
                     ctrl1.LoadControl();
@@ -37,6 +45,11 @@ namespace PlayZone
         {
             frmArchives frm = new frmArchives();
             frm.ShowDialog();
+        }
+
+        private async void frmMain_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
