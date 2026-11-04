@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-
 
 namespace PlayZone
 {
@@ -14,24 +8,18 @@ namespace PlayZone
     {
         public static string GenerateGUID()
         {
+            //Guid newGuid = Guid.NewGuid();
+            //return newGuid.ToString();
 
-            // Generate a new GUID
-            Guid newGuid = Guid.NewGuid();
-
-            // convert the GUID to a string
-            return newGuid.ToString();
-
+            return Guid.NewGuid().ToString();
         }
 
         public static bool CreateFolderIfDoesNotExist(string FolderPath)
         {
-
-            // Check if the folder exists
             if (!Directory.Exists(FolderPath))
             {
                 try
                 {
-                    // If it doesn't exist, create the folder
                     Directory.CreateDirectory(FolderPath);
                     return true;
                 }
@@ -43,26 +31,21 @@ namespace PlayZone
             }
 
             return true;
-
         }
 
         public static string ReplaceFileNameWithGUID(string sourceFile)
         {
-            // Full file name. Change your file name   
-            string fileName = sourceFile;
-            FileInfo fi = new FileInfo(fileName);
-            string extn = fi.Extension;
-            return GenerateGUID() + extn;
+            //string fileName = sourceFile;
+            //FileInfo fi = new FileInfo(fileName);
+            //string extn = fi.Extension;
+            //return GenerateGUID() + extn;
 
+            return GenerateGUID() + new FileInfo(sourceFile).Extension;
         }
 
         public static bool CopyImageToProjectImagesFolder(ref string sourceFile)
         {
-            // this funciton will copy the image to the
-            // project images foldr after renaming it
-            // with GUID with the same extention, then it will update the sourceFileName with the new name.
-
-            string DestinationFolder = @"F:\PlayZoneImages\";
+            string DestinationFolder = @"F:\Programming Advices\My Projects\PlayZone\PlayZoneImages";
             if (!CreateFolderIfDoesNotExist(DestinationFolder))
             {
                 return false;
@@ -82,8 +65,5 @@ namespace PlayZone
             sourceFile = destinationFile;
             return true;
         }
-
-      
-
     }
 }

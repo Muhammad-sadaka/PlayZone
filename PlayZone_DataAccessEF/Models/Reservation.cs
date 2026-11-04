@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace PlayZone_DataAccessEF.Models;
+﻿namespace PlayZone_DataAccessEF.Models;
 
 public partial class Reservation
 {

@@ -1,14 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PlayZone_Buisness;
-using PlayZone_DataAccessEF.Models;
+﻿using PlayZone_Buisness;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PlayZone
@@ -47,9 +38,36 @@ namespace PlayZone
             frm.ShowDialog();
         }
 
-        private async void frmMain_Load(object sender, EventArgs e)
+        private void frmMain_Load(object sender, EventArgs e)
         {
+            // 1. جلب بصمة الجهاز الحالية
+            string currentMachineId = LicensingHelper.GetMachineId();
 
+            // 2. قراءة المفتاح المحفوظ من الملف الخارجي (license.dat)
+            string savedKey = LicensingHelper.ReadLicenseKey();
+
+            if (!LicensingHelper.ValidateActivationKey(currentMachineId, savedKey))
+            {
+                MessageBox.Show("البرنامج غير مفعل على هذا الجهاز!\nرقم الجهاز الخاص بك هو: " + currentMachineId,
+                                "تنبيه ترخيص البرنامج", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                // فتح نافذة إدخال مفتاح التفعيل
+                frmActivation frmAct = new frmActivation();
+                frmAct.ShowDialog();
+
+                // إعادة التحقق بعد إغلاق نافذة التفعيل
+                savedKey = LicensingHelper.ReadLicenseKey();
+                if (!LicensingHelper.ValidateActivationKey(currentMachineId, savedKey))
+                {
+                    // إذا لم يتم التفعيل، أغلق البرنامج
+                    Environment.Exit(0);
+                }
+            }
+            else
+            {
+                // البرنامج مفعل بنجاح
+            }
         }
     }
 }
+

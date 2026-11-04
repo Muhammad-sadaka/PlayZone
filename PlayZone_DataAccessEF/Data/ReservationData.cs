@@ -15,9 +15,9 @@ namespace PlayZone_DataAccessEF.Data
                     r.StartDate,
                     r.EndDate,
                     r.Period,
-                    Convert.ToInt32(r.TotalPrice),
+                    r.TotalPrice,
                     r.SpotType.SpotTypeName,
-                    Convert.ToInt32(r.SpotType.PricePerHour)
+                    r.SpotType.PricePerHour
                 ))
                 .ToListAsync();
         }

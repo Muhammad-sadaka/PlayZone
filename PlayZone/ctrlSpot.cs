@@ -1,20 +1,8 @@
 ﻿using PlayZone_Buisness;
-using SharedDTOs;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
 using System.Windows.Forms;
-using System.Xml.Linq;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
-
-
 
 namespace PlayZone
 {
@@ -25,6 +13,7 @@ namespace PlayZone
         enMode Mode = enMode.Start;
 
         string PlayerName = null;
+        int? Period = null;
 
         public ctrlSpot()
         {
@@ -45,10 +34,11 @@ namespace PlayZone
             lblTimer.Text = time.ToString(@"hh\:mm\:ss");
         }
 
-        private void Form2_DataBack(object sender, string SpotTypeName)
+        private void Form2_DataBack(object sender, string spotTypeName,int? period)
         {
-            PlayerName = SpotTypeName;
+            PlayerName = spotTypeName;
             lblSpotName.Text = PlayerName;
+            Period = period;
         }
 
         private void btnStart_Click(object sender, EventArgs e)

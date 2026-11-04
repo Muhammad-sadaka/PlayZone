@@ -1,9 +1,7 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PlayZone_DataAccessEF.Models;
 using SharedDTOs;
 using System.Data;
-using System.Diagnostics;
 
 namespace PlayZone_DataAccessEF.Data
 {
