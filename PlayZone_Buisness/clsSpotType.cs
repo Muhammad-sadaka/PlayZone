@@ -21,7 +21,7 @@ namespace PlayZone_Buisness
         {
             SpotTypeID = -1;
             SpotTypeName = string.Empty;
-            PricePerHour = -1;
+            PricePerHour = 0;
             ImagePath = string.Empty;
             Mode = enMode.AddNew;
         }

@@ -8,61 +8,50 @@ namespace PlayZone_Buisness
 {
     public class clsReservation
     {
-        public enum enMode { AddNew = 0, Update = 1 }
+        public enum enMode { AddNew = 0, Update = 1 };
         public enMode Mode = enMode.AddNew;
 
-        public int ReservationID { set; get; }
-        public string CustomerName { set; get; }
-        public DateTime? StartDate { set; get; }
-        public DateTime? EndDate { set; get; }
-        public TimeSpan? Period { set; get; }
-        public decimal? TotalPrice { set; get; }
-        public int SpotTypeID { set; get; }
+        public ReservationDTO Dto => new ReservationDTO(this.ReservationID, this.CustomerName, this.StartDate, this.EndDate, this.Period, this.TotalPrice, this.SpotTypeID, this.IsActive);
 
-        public ReservationDTO Dto => new ReservationDTO(
-            this.ReservationID,
-            this.CustomerName,
-            this.StartDate,
-            this.EndDate,
-            this.Period,
-            this.TotalPrice,
-            this.SpotTypeID,
-            string.Empty, // اسم نوع البقعة يتم جلبه تلقائياً في الاستعلامات المركبة
-            0
-        );
-
-
+        public int? ReservationID { get; set; }
+        public string CustomerName { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public TimeSpan? Period { get; set; }
+        public decimal? TotalPrice { get; set; }
+        public int? SpotTypeID { get; set; }
+        public bool? IsActive { get; set; }
 
         public clsReservation()
         {
-            this.ReservationID = 0;
-            this.CustomerName = string.Empty;
-            this.StartDate = null;
-            this.EndDate = null;
-            this.Period = null;
-            this.TotalPrice = null;
-            this.SpotTypeID = 0;
-
+            ReservationID = -1;
+            CustomerName = string.Empty;
+            StartDate = DateTime.Now;
+            EndDate = null;
+            Period = null;
+            TotalPrice = 0;
+            SpotTypeID = -1;
+            IsActive = true;
             Mode = enMode.AddNew;
         }
 
         private clsReservation(ReservationDTO dto, enMode mode = enMode.Update)
         {
-            this.ReservationID = dto.ReservationId;
-            this.CustomerName = dto.CustomerName;
-            this.StartDate = dto.StartDate;
-            this.EndDate = dto.EndDate;
-            this.Period = dto.Period;
-            this.TotalPrice = dto.TotalPrice;
-            this.SpotTypeID = dto.SpotTypeId;
-
+            ReservationID = dto.ReservationID;
+            CustomerName = dto.CustomerName;
+            StartDate = dto.StartDate;
+            EndDate = dto.EndDate;
+            Period = dto.Period;
+            TotalPrice = dto.TotalPrice;
+            SpotTypeID = dto.SpotTypeID;
+            IsActive = dto.IsActive;
             Mode = mode;
         }
 
         private async Task<bool> _AddNewReservationAsync()
         {
             this.ReservationID = await ReservationData.AddAsync(this.Dto);
-            return (this.ReservationID > 0);
+            return (this.ReservationID != -1);
         }
 
         private async Task<bool> _UpdateReservationAsync()
@@ -98,9 +87,14 @@ namespace PlayZone_Buisness
             return false;
         }
 
-        public static async Task<List<ReservationListDTO>> GetAllReservationsAsync()
+        public static async Task<List<ReservationDTO>> GetAllReservationsAsync()
         {
             return await ReservationData.GetAllAsync();
+        }
+
+        public static async Task<List<ReservationDTO>> GetActiveReservationsAsync()
+        {
+            return await ReservationData.GetActiveReservationsAsync();
         }
 
         public static async Task<bool> DeleteReservationAsync(int reservationID)

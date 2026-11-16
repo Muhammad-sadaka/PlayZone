@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SharedDTOs
 {
@@ -9,17 +10,19 @@ namespace SharedDTOs
 
         [Column("SpotType Name")]
         public string SpotTypeName { set; get; }
+
         [Column("Price Per Hour")]
-        public Decimal? PricePerHour { set; get; }
+        public decimal? PricePerHour { set; get; }
+
         [Column("Image Path")]
         public string ImagePath { set; get; }
 
-        public SpotTypeDTO(int? SpotTypeID, string SpotTypeName, Decimal? PricePerHour, string ImagePath)
+        public SpotTypeDTO(int? spotTypeID, string spotTypeName, decimal? pricePerHour, string imagePath)
         {
-            this.SpotTypeID = SpotTypeID;
-            this.SpotTypeName = SpotTypeName;
-            this.PricePerHour = PricePerHour;
-            this.ImagePath = ImagePath;
+            SpotTypeID = spotTypeID;
+            SpotTypeName = spotTypeName;
+            PricePerHour = pricePerHour;
+            ImagePath = imagePath;
         }
     }
 }

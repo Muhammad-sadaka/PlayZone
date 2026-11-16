@@ -1,83 +1,44 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SharedDTOs
 {
-
     public class ReservationDTO
     {
-        public int ReservationId { get; set; }
+        [Column("Reservation ID")]
+        public int? ReservationID { set; get; }
 
         [Column("Customer Name")]
-        public string CustomerName { get; set; }
+        public string CustomerName { set; get; }
 
         [Column("Start Date")]
-        public DateTime? StartDate { get; set; }
+        public DateTime StartDate { set; get; }
 
         [Column("End Date")]
-        public DateTime? EndDate { get; set; }
+        public DateTime? EndDate { set; get; }
 
-        public TimeSpan? Period { get; set; }
+        [Column("Period")]
+        public TimeSpan? Period { set; get; }
 
         [Column("Total Price")]
-        public decimal? TotalPrice { get; set; }
+        public decimal? TotalPrice { set; get; }
 
-        public int SpotTypeId { get; set; }
+        [Column("Spot Type ID")]
+        public int? SpotTypeID { set; get; }
 
-        [Column("Spot Type")]
-        public string SpotType { get; set; }
+        [Column("Is Active")]
+        public bool? IsActive { set; get; }
 
-        [Column("Price Per Hour")]
-        public decimal? PricePerHour { get; set; }
-
-        public ReservationDTO() { }
-
-        public ReservationDTO(int reservationId, string customerName, DateTime? startDate, DateTime? endDate, TimeSpan? period, decimal? totalPrice, int spotTypeId, string spotType, decimal? pricePerHour)
+        public ReservationDTO(int? reservationID, string customerName, DateTime startDate, DateTime? endDate, TimeSpan? period, decimal? totalPrice, int? spotTypeID, bool? isActive)
         {
-            ReservationId = reservationId;
+            ReservationID = reservationID;
             CustomerName = customerName;
             StartDate = startDate;
             EndDate = endDate;
             Period = period;
             TotalPrice = totalPrice;
-            SpotTypeId = spotTypeId;
-            SpotType = spotType;
-            PricePerHour = pricePerHour;
+            SpotTypeID = spotTypeID;
+            IsActive = isActive;
         }
     }
-    public class ReservationListDTO
-    {
-
-        [Column("Customer Name")]
-        public string CustomerName { get; set; }
-
-        [Column("Start Date")]
-        public DateTime? StartDate { get; set; }
-
-        [Column("End Date")]
-        public DateTime? EndDate { get; set; }
-
-        public TimeSpan? Period { get; set; }
-
-        [Column("Total Price")]
-        public decimal? TotalPrice { get; set; }
-
-        [Column("Spot Type")]
-        public string SpotType { get; set; }
-
-        [Column("Price Per Hour")]
-        public decimal? PricePerHour { get; set; }
-        public ReservationListDTO( string customerName, DateTime? startDate, DateTime? endDate, TimeSpan? period, decimal? totalPrice, string spotType, decimal? pricePerHour)
-        {
-            CustomerName = customerName;
-            StartDate = startDate;
-            EndDate = endDate;
-            Period = period;
-            TotalPrice = totalPrice;
-            SpotType = spotType;
-            PricePerHour = pricePerHour;
-        }
-    } 
-
 }
-
-

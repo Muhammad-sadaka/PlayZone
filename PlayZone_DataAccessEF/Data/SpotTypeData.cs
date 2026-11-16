@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PlayZone_DataAccessEF.Models;
 using SharedDTOs;
-using System.Data;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PlayZone_DataAccessEF.Data
 {
@@ -11,7 +13,7 @@ namespace PlayZone_DataAccessEF.Data
         {
             using var context = new PlayZoneContext();
             return await context.SpotTypes
-                .Select(s => new SpotTypeDTO(s.SpotTypeId, s.SpotTypeName, (int)s.PricePerHour, s.Image))
+                .Select(s => new SpotTypeDTO(s.SpotTypeId, s.SpotTypeName, s.PricePerHour, s.Image))
                 .ToListAsync();
         }
 
@@ -29,7 +31,7 @@ namespace PlayZone_DataAccessEF.Data
             var spotType = new SpotType
             {
                 SpotTypeName = dto.SpotTypeName,
-                PricePerHour = dto.PricePerHour,
+                PricePerHour = dto.PricePerHour ?? 0,
                 Image = dto.ImagePath
             };
 
@@ -45,7 +47,7 @@ namespace PlayZone_DataAccessEF.Data
             if (existing == null) return false;
 
             existing.SpotTypeName = dto.SpotTypeName;
-            existing.PricePerHour = dto.PricePerHour;
+            existing.PricePerHour = dto.PricePerHour ?? 0;
             existing.Image = dto.ImagePath;
 
             context.SpotTypes.Update(existing);

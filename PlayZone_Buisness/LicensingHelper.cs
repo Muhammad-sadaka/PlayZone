@@ -26,7 +26,6 @@ public static class LicensingHelper
         return string.Empty;
     }
     
-    // 1. جلب بصمة الجهاز الفريدة
     public static string GetMachineId()
     {
         string cpuInfo = "";
@@ -45,11 +44,9 @@ public static class LicensingHelper
             cpuInfo = "PC_ID_FALLBACK";
         }
 
-        // دمج المعرف مع قيمة ثابتة لتوليد هاش قصير وواضح
         return GetHash(cpuInfo + "PlayZone_Secret_Key");
     }
 
-    // دالة لتوليد تشفير قصير وسهل القراءة
     private static string GetHash(string input)
     {
         using (SHA256 sha256 = SHA256.Create())
@@ -66,18 +63,14 @@ public static class LicensingHelper
         }
     }
 
-    // 2. التحقق من مفتاح التفعيل الذي سيدخله الزبون
-    public static bool ValidateActivationKey(string machineId, string enteredKey)
+    public static bool ValidateActivationKey(string enteredKey)
     {
-        // الطريقة السرية الخاصة بك: مفتاح التفعيل هو بصمة الجهاز معكوسة أو مضاف لها كلمة سرية
-        string expectedKey = GenerateKeyForMachine(machineId);
+        string expectedKey = GenerateKeyForMachine(LicensingHelper.GetMachineId());
         return string.Equals(expectedKey, enteredKey.Trim(), StringComparison.OrdinalIgnoreCase);
     }
 
-    // 3. الدالة التي تستخدمها أنت وحدك (على جهازك) لتوليد مفتاح الزبون عند الدفع
     public static string GenerateKeyForMachine(string machineId)
     {
-        // معادلة بسيطة تعتمد على بصمة جهازه لتوليد المفتاح الخاص به
         return GetHash(machineId + "MySuperSecretSalt2026");
     }
 }
