@@ -11,17 +11,20 @@ namespace PlayZone
 {
     public partial class frmDetails : Form
     {
-        private readonly int _ReservationID;
+        public delegate void DataBackEventHandler(object sender, decimal SessionRevenue, decimal CafeteriaRevenue, decimal GrandTotal);
+        public event DataBackEventHandler DataBack;
+
         private readonly string _SpotTitle;
         private readonly string _CustomerName;
         private readonly DateTime _StartTime;
         private readonly decimal _PricePerHour;
-        private clsReservationProduct _ReservationProduct = new clsReservationProduct();
+        private int _ReservationID;
+        private bool _EndMode = false;
 
-        private List<ReservationProductDTO> _Orders = new();
+        private List<ReservationProductListDTO> _Orders = new();
 
         public frmDetails(int reservationID, string spotTypeName, string spotName,
-            string customerName, DateTime startTime, decimal pricePerHour)
+            string customerName, DateTime startTime, decimal pricePerHour, bool endMode = false)
         {
             InitializeComponent();
 
@@ -30,6 +33,7 @@ namespace PlayZone
             _CustomerName = customerName;
             _StartTime = startTime;
             _PricePerHour = pricePerHour;
+            _EndMode = endMode;
         }
 
         private async void frmDetails_Load(object sender, EventArgs e)
@@ -37,8 +41,10 @@ namespace PlayZone
             lblSpotInfo.Text = _SpotTitle;
             lblCustomer.Text = _CustomerName;
             lblStarted.Text = _StartTime.ToString("dd/MM/yyyy hh:mm tt");
+            lblPricePerHour.Text = _PricePerHour.ToString();
 
             _SetupOrdersGrid();
+
             await _LoadProductsComboAsync();
             await _RefreshOrdersAsync();
 
@@ -46,7 +52,14 @@ namespace PlayZone
 
             _UpdateTimeAndCost();
             timer1.Interval = 1000;
-            timer1.Start();
+
+            if (_EndMode)
+            {
+                timer1.Stop();
+                panel2.Enabled = false;
+            }
+            else
+                timer1.Start();
         }
 
         // ---------- الوقت والتكلفة ----------
@@ -65,11 +78,12 @@ namespace PlayZone
 
             decimal playing = _GetPlayingCost();
             decimal? products = _Orders.Sum(o => o.TotalPrice);
-
+            decimal GrandTotal = playing + products.Value;
             lblPlayingCost.Text = playing.ToString("0.00");
-            lblPlayingCostTotal.Text = playing.ToString("0.00");
-            lblGrandTotal.Text = products.Value.ToString("0.00");
-            lblGrandTotal.Text = (playing + products).Value.ToString("0.00");
+            lblProductsTotal.Text = products.Value.ToString("0.00");
+            lblGrandTotal.Text = GrandTotal.ToString("0.00");
+
+            DataBack?.Invoke(this, playing, products.Value, GrandTotal );
         }
 
         // ---------- جدول الطلبات ----------
@@ -77,9 +91,9 @@ namespace PlayZone
         {
             dgvOrders.AutoGenerateColumns = false;
             dgvOrders.Columns.Clear();
-            dgvOrders.AllowUserToAddRows = false;
-            dgvOrders.ReadOnly = true;
-            dgvOrders.RowHeadersVisible = false;
+            //dgvOrders.AllowUserToAddRows = false;
+            //dgvOrders.ReadOnly = true;
+            //dgvOrders.RowHeadersVisible = false;
             dgvOrders.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
             dgvOrders.Columns.Add(new DataGridViewTextBoxColumn
@@ -96,9 +110,9 @@ namespace PlayZone
             });
             dgvOrders.Columns.Add(new DataGridViewTextBoxColumn
             {
-                Name = "Total",
-                HeaderText = "Total",
-                DataPropertyName = "Total",
+                Name = "TotalPrice",
+                HeaderText = "TotalPrice",
+                DataPropertyName = "TotalPrice",
                 FillWeight = 20,
                 DefaultCellStyle = new DataGridViewCellStyle { Format = "0.00" }
             });
@@ -118,13 +132,13 @@ namespace PlayZone
 
         private async void dgvOrders_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0 || dgvOrders.Columns[e.ColumnIndex].Name != "Delete") return;
+            if (e.RowIndex < 0 || dgvOrders.Columns[e.ColumnIndex].Name != "Delete" || _EndMode) return;
 
             var order = _Orders[e.RowIndex];
 
-            //if (MessageBox.Show($"Remove \"{order.ProductName}\" from the order?", "Confirm",
-            //        MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
-            //    return;
+            if (MessageBox.Show($"Remove \"{order.ProductName}\" from the order?", "Confirm",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                return;
 
             if (await clsReservationProduct.DeleteReservationProductAsync(order.OrderProductID!.Value))
                 await _RefreshOrdersAsync();
@@ -149,7 +163,7 @@ namespace PlayZone
         private void _ShowSelectedProductPrice()
         {
             if (cbProducts.SelectedItem is ProductDTO p)
-                tbPriceMenu.Text = p.Price.Value.ToString("0.00");
+                tbPrice.Text = p.Price.Value.ToString("0.00");
         }
 
         // التبويب: From Menu / Custom Product
@@ -160,15 +174,15 @@ namespace PlayZone
         {
             cbProducts.Visible = !isCustom;
             tbProductName.Visible = isCustom;
-            tbPriceMenu.ReadOnly = !isCustom;
+            tbPrice.ReadOnly = !isCustom;
 
             errorProvider1.Clear();
-            nudQuantityMenu.Value = 1;
+            nudQuantity.Value = 1;
 
             if (isCustom)
             {
                 tbProductName.Clear();
-                tbPriceMenu.Clear();
+                tbPrice.Clear();
             }
             else
             {
@@ -178,12 +192,12 @@ namespace PlayZone
 
         private async void btnAdd_Click(object sender, EventArgs e)
         {
+            clsReservationProduct _ReservationProduct = new clsReservationProduct();
             bool isCustom = tcAddProduct.SelectedTab == tpCustom;
 
-            int? productId;
             string name;
             decimal price;
-            int qty = (int)nudQuantityMenu.Value;
+            int qty = (int)nudQuantity.Value;
 
             if (isCustom)
             {
@@ -193,12 +207,13 @@ namespace PlayZone
                     errorProvider1.SetError(tbProductName, "Product name is required!");
                     return;
                 }
-                if (!decimal.TryParse(tbPriceCustom.Text, out price) || price <= 0)
+                if (!decimal.TryParse(tbPrice.Text, out price) || price <= 0)
                 {
-                    errorProvider1.SetError(tbPriceCustom, "Enter a valid price!");
+                    errorProvider1.SetError(tbPrice, "Enter a valid price!");
                     return;
                 }
-                productId = null;
+                _ReservationProduct.ProductID = null;
+                _ReservationProduct.ProductName = name;
             }
             else
             {
@@ -207,8 +222,8 @@ namespace PlayZone
                     errorProvider1.SetError(cbProducts, "Select a product!");
                     return;
                 }
-                productId = p.ProductID;
-                name = p.ProductName;
+                _ReservationProduct.ProductID = p.ProductID;
+                _ReservationProduct.ProductName = null;
                 price = p.Price.Value;
             }
 
@@ -216,18 +231,14 @@ namespace PlayZone
 
             if (qty <= 0)
             {
-                errorProvider1.SetError(nudQuantityMenu, "Quantity must be at least 1.");
+                errorProvider1.SetError(nudQuantity, "Quantity must be at least 1.");
                 return;
             }
 
-            //_ReservationProduct = new clsReservationProduct 
-            //{ 
-            //    OrderProductID = _ReservationID,
-            //    ReservationID =  productId,
-            //    ProductID = name,
-            //    Quantity = qty,
-            //    TotalPrice = price
-            //};
+            _ReservationProduct.ReservationID = _ReservationID;
+            _ReservationProduct.Quantity = qty;
+            _ReservationProduct.TotalPrice = price * qty;
+
 
             if (!await _ReservationProduct.SaveAsync())
             {
@@ -245,17 +256,5 @@ namespace PlayZone
             timer1.Stop();
             this.Close();
         }
-
-        private void btnAddCustom_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnAddMenu_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
     }
 }

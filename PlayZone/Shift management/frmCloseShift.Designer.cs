@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmCloseShift));
             lblTitle = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             panel1 = new System.Windows.Forms.Panel();
@@ -382,6 +383,7 @@
             // 
             // frmCloseShift
             // 
+            AcceptButton = btnCloseShift;
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.FromArgb(18, 18, 18);
@@ -394,6 +396,7 @@
             Controls.Add(panel1);
             Controls.Add(lblTitle);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             Name = "frmCloseShift";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "Close Shift";

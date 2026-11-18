@@ -122,7 +122,7 @@ namespace PlayZone
             try
             {
                 // Prevent duplicate names
-                if (await clsProduct.IsNameTakenAsync(name, _ProductID))
+                if (await clsProduct.IsProductExistAsync(name))
                 {
                     errorProvider1.SetError(tbProductName, "A product with this name already exists.");
                     btnSave.Enabled = true;

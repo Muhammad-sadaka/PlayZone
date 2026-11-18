@@ -13,16 +13,15 @@ namespace PlayZone
 {
     public partial class frmShift : Form
     {
-        private clsUser _currentUser;
-        private Form _loginForm;
-        private bool _existMain;
+        public delegate void DataBackEventHandler(object sender, int shiftID);
+        public event DataBackEventHandler DataBack;
 
-        public frmShift(clsUser currentUser, Form loginForm,bool existMain = false)
+        private clsUser _currentUser;
+
+        public frmShift(clsUser currentUser)
         {
             InitializeComponent();
             _currentUser = currentUser;
-            _loginForm = loginForm;
-            _existMain = existMain;
         }
 
         private void frmShift_Load(object sender, EventArgs e)
@@ -46,13 +45,8 @@ namespace PlayZone
                 if (newShift != null)
                 {
                     txtStartingCash.Clear();
-                    this.Hide();
-
-                    if (!_existMain)
-                    {
-                        frmMain frm = new frmMain(_currentUser, this);
-                        frm.ShowDialog();
-                    }
+                    this.Close();
+                    DataBack?.Invoke(this, newShift.ShiftID.Value);
                 }
                 else
                 {
@@ -69,7 +63,6 @@ namespace PlayZone
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
-            _loginForm.Show();
         }
 
     }

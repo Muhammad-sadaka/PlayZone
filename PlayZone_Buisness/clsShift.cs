@@ -12,6 +12,7 @@ namespace PlayZone_Buisness
         public enMode Mode = enMode.AddNew;
 
         public ShiftDTO Dto => new ShiftDTO(this.ShiftID, this.UserID, this.StartTime, this.EndTime, this.StartingCash, this.TotalSales, this.ExpectedCash, this.ActualCash);
+        
 
         public int? ShiftID { get; set; }
         public int? UserID { get; set; }
@@ -69,6 +70,11 @@ namespace PlayZone_Buisness
                 return null;
         }
 
+        public static async Task<ShiftSummaryDTO?> GetSummaryAsync(int shiftID)
+        {
+            return await ShiftData.GetSummaryAsync(shiftID);
+        }
+
         public async Task<bool> SaveAsync()
         {
             switch (Mode)
@@ -87,11 +93,16 @@ namespace PlayZone_Buisness
             return false;
         }
 
-        public static async Task<List<ShiftDTO>> GetAllShiftsAsync()
+        public static async Task<List<ShiftsListDTO>> GetAllShiftsAsync()
         {
             return await ShiftData.GetAllAsync();
         }
 
+        public static async Task<List<SalesListDTO>> GetAllSalesAndIncomeAsync()
+        {
+            return await ShiftData.GetAllSalesAndIncomeAsync();
+        }
+        
         public static async Task<bool> DeleteShiftAsync(int shiftID)
         {
             return await ShiftData.DeleteAsync(shiftID);
@@ -120,6 +131,21 @@ namespace PlayZone_Buisness
             }
 
             return null;
+        }
+
+        public static async Task<bool> CloseShiftAsync(int shiftID,decimal closingCash)
+        {
+            clsShift shift = await clsShift.FindByIDAsync(shiftID);
+            shift.ActualCash = closingCash;
+            shift.EndTime = DateTime.Now;
+            shift.TotalSales = await clsReservation.TotalReservationPerShiftAsync(shiftID);
+
+            if (await shift.SaveAsync())
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

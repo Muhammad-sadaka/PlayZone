@@ -236,6 +236,7 @@
             Controls.Add(panel1);
             Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             Margin = new System.Windows.Forms.Padding(5);
             Name = "frmShift";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

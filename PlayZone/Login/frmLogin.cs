@@ -28,18 +28,15 @@ namespace PlayZone
 
                 if (authenticatedUser != null)
                 {
-                    txtUsername.Clear(); txtPassword.Clear(); 
+                    txtUsername.Clear();
+                    txtPassword.Clear();
+                    txtUsername.Focus(); 
+                    
                     this.Hide();
-                    if (authenticatedUser.RoleID == 3)
-                    {
-                        frmShift shiftForm = new frmShift(authenticatedUser, this);
-                        shiftForm.Show();
-                    }
-                    else
-                    {
-                        frmMain frm = new frmMain(this,authenticatedUser);
-                        frm.Show();
-                    }
+
+                    frmMain frm = new frmMain(authenticatedUser, this);
+                    frm.Show();
+                    
                 }
                 else
                 {

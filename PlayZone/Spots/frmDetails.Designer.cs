@@ -34,11 +34,12 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDetails));
             label1 = new System.Windows.Forms.Label();
             panel1 = new System.Windows.Forms.Panel();
-            label9 = new System.Windows.Forms.Label();
+            label44 = new System.Windows.Forms.Label();
             label8 = new System.Windows.Forms.Label();
-            lblPlayingCostkoko = new System.Windows.Forms.Label();
+            lblPricePerHour = new System.Windows.Forms.Label();
             lblElapsed = new System.Windows.Forms.Label();
             lblStarted = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
@@ -48,25 +49,20 @@
             dgvOrders = new System.Windows.Forms.DataGridView();
             label2 = new System.Windows.Forms.Label();
             panel2 = new System.Windows.Forms.Panel();
-            tcAddProduct = new System.Windows.Forms.TabControl();
-            tabPage2 = new System.Windows.Forms.TabPage();
-            btnAddMenu = new System.Windows.Forms.Button();
-            nudQuantityMenu = new System.Windows.Forms.NumericUpDown();
-            cbProducts = new System.Windows.Forms.ComboBox();
-            tbPriceMenu = new System.Windows.Forms.TextBox();
-            label11 = new System.Windows.Forms.Label();
+            tbPrice = new System.Windows.Forms.TextBox();
+            btnAdd = new System.Windows.Forms.Button();
+            label7 = new System.Windows.Forms.Label();
+            nudQuantity = new System.Windows.Forms.NumericUpDown();
             label12 = new System.Windows.Forms.Label();
+            tcAddProduct = new System.Windows.Forms.TabControl();
+            tpMenu = new System.Windows.Forms.TabPage();
+            cbProducts = new System.Windows.Forms.ComboBox();
             label13 = new System.Windows.Forms.Label();
             tpCustom = new System.Windows.Forms.TabPage();
-            nudQuantityCustom = new System.Windows.Forms.NumericUpDown();
-            btnAddCustom = new System.Windows.Forms.Button();
-            tbPriceCustom = new System.Windows.Forms.TextBox();
             tbProductName = new System.Windows.Forms.TextBox();
-            label7 = new System.Windows.Forms.Label();
-            label6 = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
             panel3 = new System.Windows.Forms.Panel();
-            lblPlayingCostTotal = new System.Windows.Forms.Label();
+            lblProductsTotal = new System.Windows.Forms.Label();
             lblGrandTotal = new System.Windows.Forms.Label();
             label16 = new System.Windows.Forms.Label();
             label14 = new System.Windows.Forms.Label();
@@ -78,11 +74,10 @@
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvOrders).BeginInit();
             panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)nudQuantity).BeginInit();
             tcAddProduct.SuspendLayout();
-            tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)nudQuantityMenu).BeginInit();
+            tpMenu.SuspendLayout();
             tpCustom.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)nudQuantityCustom).BeginInit();
             panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
@@ -101,9 +96,9 @@
             // panel1
             // 
             panel1.BackColor = System.Drawing.Color.FromArgb(18, 18, 18);
-            panel1.Controls.Add(label9);
+            panel1.Controls.Add(label44);
             panel1.Controls.Add(label8);
-            panel1.Controls.Add(lblPlayingCostkoko);
+            panel1.Controls.Add(lblPricePerHour);
             panel1.Controls.Add(lblElapsed);
             panel1.Controls.Add(lblStarted);
             panel1.Controls.Add(label4);
@@ -114,45 +109,45 @@
             panel1.Size = new System.Drawing.Size(805, 112);
             panel1.TabIndex = 29;
             // 
-            // label9
+            // label44
             // 
-            label9.AutoSize = true;
-            label9.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            label9.ForeColor = System.Drawing.Color.FromArgb(224, 224, 224);
-            label9.Location = new System.Drawing.Point(416, 60);
-            label9.Name = "label9";
-            label9.Size = new System.Drawing.Size(145, 31);
-            label9.TabIndex = 17;
-            label9.Text = "Playing Cost:";
+            label44.AutoSize = true;
+            label44.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            label44.ForeColor = System.Drawing.Color.FromArgb(224, 224, 224);
+            label44.Location = new System.Drawing.Point(413, 11);
+            label44.Name = "label44";
+            label44.Size = new System.Drawing.Size(163, 31);
+            label44.TabIndex = 17;
+            label44.Text = "Price Per Hour:";
             // 
             // label8
             // 
             label8.AutoSize = true;
             label8.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             label8.ForeColor = System.Drawing.Color.FromArgb(224, 224, 224);
-            label8.Location = new System.Drawing.Point(416, 11);
+            label8.Location = new System.Drawing.Point(413, 60);
             label8.Name = "label8";
             label8.Size = new System.Drawing.Size(155, 31);
             label8.TabIndex = 16;
             label8.Text = "Elapsed Time:";
             // 
-            // lblPlayingCostkoko
+            // lblPricePerHour
             // 
-            lblPlayingCostkoko.AutoSize = true;
-            lblPlayingCostkoko.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            lblPlayingCostkoko.ForeColor = System.Drawing.Color.White;
-            lblPlayingCostkoko.Location = new System.Drawing.Point(577, 60);
-            lblPlayingCostkoko.Name = "lblPlayingCostkoko";
-            lblPlayingCostkoko.Size = new System.Drawing.Size(55, 31);
-            lblPlayingCostkoko.TabIndex = 15;
-            lblPlayingCostkoko.Text = "7.00";
+            lblPricePerHour.AutoSize = true;
+            lblPricePerHour.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            lblPricePerHour.ForeColor = System.Drawing.Color.White;
+            lblPricePerHour.Location = new System.Drawing.Point(582, 11);
+            lblPricePerHour.Name = "lblPricePerHour";
+            lblPricePerHour.Size = new System.Drawing.Size(55, 31);
+            lblPricePerHour.TabIndex = 15;
+            lblPricePerHour.Text = "7.00";
             // 
             // lblElapsed
             // 
             lblElapsed.AutoSize = true;
             lblElapsed.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             lblElapsed.ForeColor = System.Drawing.Color.FromArgb(50, 131, 255);
-            lblElapsed.Location = new System.Drawing.Point(577, 11);
+            lblElapsed.Location = new System.Drawing.Point(582, 60);
             lblElapsed.Name = "lblElapsed";
             lblElapsed.Size = new System.Drawing.Size(84, 31);
             lblElapsed.TabIndex = 14;
@@ -253,12 +248,14 @@
             dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             dgvOrders.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dgvOrders.RowHeadersVisible = false;
             dgvOrders.RowHeadersWidth = 51;
             dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(32, 32, 32);
             dgvOrders.RowsDefaultCellStyle = dataGridViewCellStyle5;
             dgvOrders.RowTemplate.Height = 26;
             dgvOrders.Size = new System.Drawing.Size(805, 186);
             dgvOrders.TabIndex = 31;
+            dgvOrders.CellContentClick += dgvOrders_CellContentClick;
             // 
             // label2
             // 
@@ -274,110 +271,110 @@
             // panel2
             // 
             panel2.BackColor = System.Drawing.Color.FromArgb(18, 18, 18);
+            panel2.Controls.Add(tbPrice);
+            panel2.Controls.Add(btnAdd);
+            panel2.Controls.Add(label7);
+            panel2.Controls.Add(nudQuantity);
+            panel2.Controls.Add(label12);
             panel2.Controls.Add(tcAddProduct);
             panel2.Location = new System.Drawing.Point(23, 486);
             panel2.Name = "panel2";
             panel2.Size = new System.Drawing.Size(805, 177);
             panel2.TabIndex = 33;
             // 
-            // tcAddProduct
+            // tbPrice
             // 
-            tcAddProduct.Controls.Add(tabPage2);
-            tcAddProduct.Controls.Add(tpCustom);
-            tcAddProduct.Dock = System.Windows.Forms.DockStyle.Top;
-            tcAddProduct.Location = new System.Drawing.Point(0, 0);
-            tcAddProduct.Name = "tcAddProduct";
-            tcAddProduct.SelectedIndex = 0;
-            tcAddProduct.Size = new System.Drawing.Size(805, 174);
-            tcAddProduct.TabIndex = 35;
+            tbPrice.BackColor = System.Drawing.Color.FromArgb(64, 64, 64);
+            tbPrice.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            tbPrice.ForeColor = System.Drawing.Color.White;
+            tbPrice.Location = new System.Drawing.Point(418, 94);
+            tbPrice.Name = "tbPrice";
+            tbPrice.Size = new System.Drawing.Size(132, 38);
+            tbPrice.TabIndex = 38;
             // 
-            // tabPage2
+            // btnAdd
             // 
-            tabPage2.BackColor = System.Drawing.Color.FromArgb(18, 18, 18);
-            tabPage2.Controls.Add(btnAddMenu);
-            tabPage2.Controls.Add(nudQuantityMenu);
-            tabPage2.Controls.Add(cbProducts);
-            tabPage2.Controls.Add(tbPriceMenu);
-            tabPage2.Controls.Add(label11);
-            tabPage2.Controls.Add(label12);
-            tabPage2.Controls.Add(label13);
-            tabPage2.Location = new System.Drawing.Point(4, 29);
-            tabPage2.Name = "tabPage2";
-            tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            tabPage2.Size = new System.Drawing.Size(797, 141);
-            tabPage2.TabIndex = 1;
-            tabPage2.Text = "From Menu";
+            btnAdd.BackColor = System.Drawing.Color.FromArgb(50, 131, 255);
+            btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnAdd.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
+            btnAdd.ForeColor = System.Drawing.Color.White;
+            btnAdd.Location = new System.Drawing.Point(702, 94);
+            btnAdd.Name = "btnAdd";
+            btnAdd.Size = new System.Drawing.Size(101, 39);
+            btnAdd.TabIndex = 50;
+            btnAdd.Text = "Add";
+            btnAdd.UseVisualStyleBackColor = false;
+            btnAdd.Click += btnAdd_Click;
             // 
-            // btnAddMenu
+            // label7
             // 
-            btnAddMenu.BackColor = System.Drawing.Color.FromArgb(50, 131, 255);
-            btnAddMenu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            btnAddMenu.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-            btnAddMenu.ForeColor = System.Drawing.Color.White;
-            btnAddMenu.Location = new System.Drawing.Point(690, 65);
-            btnAddMenu.Name = "btnAddMenu";
-            btnAddMenu.Size = new System.Drawing.Size(101, 39);
-            btnAddMenu.TabIndex = 47;
-            btnAddMenu.Text = "Add";
-            btnAddMenu.UseVisualStyleBackColor = false;
-            btnAddMenu.Click += btnAddMenu_Click;
+            label7.AutoSize = true;
+            label7.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            label7.ForeColor = System.Drawing.Color.FromArgb(224, 224, 224);
+            label7.Location = new System.Drawing.Point(421, 63);
+            label7.Name = "label7";
+            label7.Size = new System.Drawing.Size(64, 31);
+            label7.TabIndex = 39;
+            label7.Text = "Price";
             // 
-            // nudQuantityMenu
+            // nudQuantity
             // 
-            nudQuantityMenu.BackColor = System.Drawing.Color.FromArgb(32, 32, 32);
-            nudQuantityMenu.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            nudQuantityMenu.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            nudQuantityMenu.ForeColor = System.Drawing.Color.White;
-            nudQuantityMenu.Location = new System.Drawing.Point(548, 69);
-            nudQuantityMenu.Name = "nudQuantityMenu";
-            nudQuantityMenu.Size = new System.Drawing.Size(136, 34);
-            nudQuantityMenu.TabIndex = 36;
-            // 
-            // cbProducts
-            // 
-            cbProducts.BackColor = System.Drawing.Color.FromArgb(32, 32, 32);
-            cbProducts.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            cbProducts.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            cbProducts.ForeColor = System.Drawing.Color.White;
-            cbProducts.FormattingEnabled = true;
-            cbProducts.Location = new System.Drawing.Point(15, 65);
-            cbProducts.Name = "cbProducts";
-            cbProducts.Size = new System.Drawing.Size(385, 36);
-            cbProducts.TabIndex = 46;
-            cbProducts.SelectedIndexChanged += cbProducts_SelectedIndexChanged;
-            // 
-            // tbPriceMenu
-            // 
-            tbPriceMenu.BackColor = System.Drawing.Color.FromArgb(64, 64, 64);
-            tbPriceMenu.Enabled = false;
-            tbPriceMenu.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            tbPriceMenu.ForeColor = System.Drawing.Color.White;
-            tbPriceMenu.Location = new System.Drawing.Point(406, 65);
-            tbPriceMenu.Name = "tbPriceMenu";
-            tbPriceMenu.Size = new System.Drawing.Size(136, 38);
-            tbPriceMenu.TabIndex = 44;
-            // 
-            // label11
-            // 
-            label11.AutoSize = true;
-            label11.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            label11.ForeColor = System.Drawing.Color.FromArgb(224, 224, 224);
-            label11.Location = new System.Drawing.Point(409, 34);
-            label11.Name = "label11";
-            label11.Size = new System.Drawing.Size(64, 31);
-            label11.TabIndex = 45;
-            label11.Text = "Price";
+            nudQuantity.BackColor = System.Drawing.Color.FromArgb(32, 32, 32);
+            nudQuantity.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            nudQuantity.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            nudQuantity.ForeColor = System.Drawing.Color.White;
+            nudQuantity.Location = new System.Drawing.Point(560, 98);
+            nudQuantity.Name = "nudQuantity";
+            nudQuantity.Size = new System.Drawing.Size(136, 34);
+            nudQuantity.TabIndex = 48;
             // 
             // label12
             // 
             label12.AutoSize = true;
             label12.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             label12.ForeColor = System.Drawing.Color.FromArgb(224, 224, 224);
-            label12.Location = new System.Drawing.Point(551, 34);
+            label12.Location = new System.Drawing.Point(563, 63);
             label12.Name = "label12";
             label12.Size = new System.Drawing.Size(102, 31);
-            label12.TabIndex = 40;
+            label12.TabIndex = 49;
             label12.Text = "Quantity";
+            // 
+            // tcAddProduct
+            // 
+            tcAddProduct.Controls.Add(tpMenu);
+            tcAddProduct.Controls.Add(tpCustom);
+            tcAddProduct.Location = new System.Drawing.Point(0, 0);
+            tcAddProduct.Name = "tcAddProduct";
+            tcAddProduct.SelectedIndex = 0;
+            tcAddProduct.Size = new System.Drawing.Size(412, 174);
+            tcAddProduct.TabIndex = 35;
+            tcAddProduct.SelectedIndexChanged += tcAddProduct_SelectedIndexChanged;
+            // 
+            // tpMenu
+            // 
+            tpMenu.BackColor = System.Drawing.Color.FromArgb(18, 18, 18);
+            tpMenu.Controls.Add(cbProducts);
+            tpMenu.Controls.Add(label13);
+            tpMenu.Location = new System.Drawing.Point(4, 29);
+            tpMenu.Name = "tpMenu";
+            tpMenu.Padding = new System.Windows.Forms.Padding(3);
+            tpMenu.Size = new System.Drawing.Size(404, 141);
+            tpMenu.TabIndex = 1;
+            tpMenu.Text = "From Menu";
+            // 
+            // cbProducts
+            // 
+            cbProducts.BackColor = System.Drawing.Color.FromArgb(32, 32, 32);
+            cbProducts.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cbProducts.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            cbProducts.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            cbProducts.ForeColor = System.Drawing.Color.White;
+            cbProducts.FormattingEnabled = true;
+            cbProducts.Location = new System.Drawing.Point(15, 65);
+            cbProducts.Name = "cbProducts";
+            cbProducts.Size = new System.Drawing.Size(383, 36);
+            cbProducts.TabIndex = 46;
+            cbProducts.SelectedIndexChanged += cbProducts_SelectedIndexChanged;
             // 
             // label13
             // 
@@ -393,55 +390,14 @@
             // tpCustom
             // 
             tpCustom.BackColor = System.Drawing.Color.FromArgb(18, 18, 18);
-            tpCustom.Controls.Add(nudQuantityCustom);
-            tpCustom.Controls.Add(btnAddCustom);
-            tpCustom.Controls.Add(tbPriceCustom);
             tpCustom.Controls.Add(tbProductName);
-            tpCustom.Controls.Add(label7);
-            tpCustom.Controls.Add(label6);
             tpCustom.Controls.Add(label5);
             tpCustom.Location = new System.Drawing.Point(4, 29);
             tpCustom.Name = "tpCustom";
             tpCustom.Padding = new System.Windows.Forms.Padding(3);
-            tpCustom.Size = new System.Drawing.Size(797, 141);
+            tpCustom.Size = new System.Drawing.Size(404, 141);
             tpCustom.TabIndex = 0;
             tpCustom.Text = "Custom Product ";
-            // 
-            // nudQuantityCustom
-            // 
-            nudQuantityCustom.BackColor = System.Drawing.Color.FromArgb(32, 32, 32);
-            nudQuantityCustom.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            nudQuantityCustom.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            nudQuantityCustom.ForeColor = System.Drawing.Color.White;
-            nudQuantityCustom.Location = new System.Drawing.Point(548, 69);
-            nudQuantityCustom.Name = "nudQuantityCustom";
-            nudQuantityCustom.Size = new System.Drawing.Size(136, 34);
-            nudQuantityCustom.TabIndex = 48;
-            // 
-            // btnAddCustom
-            // 
-            btnAddCustom.BackColor = System.Drawing.Color.FromArgb(50, 131, 255);
-            btnAddCustom.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            btnAddCustom.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-            btnAddCustom.ForeColor = System.Drawing.Color.White;
-            btnAddCustom.Location = new System.Drawing.Point(690, 65);
-            btnAddCustom.Name = "btnAddCustom";
-            btnAddCustom.Size = new System.Drawing.Size(101, 39);
-            btnAddCustom.TabIndex = 34;
-            btnAddCustom.Text = "Add";
-            btnAddCustom.UseVisualStyleBackColor = false;
-            btnAddCustom.Click += btnAddCustom_Click;
-            // 
-            // tbPriceCustom
-            // 
-            tbPriceCustom.BackColor = System.Drawing.Color.FromArgb(64, 64, 64);
-            tbPriceCustom.Enabled = false;
-            tbPriceCustom.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            tbPriceCustom.ForeColor = System.Drawing.Color.White;
-            tbPriceCustom.Location = new System.Drawing.Point(406, 65);
-            tbPriceCustom.Name = "tbPriceCustom";
-            tbPriceCustom.Size = new System.Drawing.Size(136, 38);
-            tbPriceCustom.TabIndex = 38;
             // 
             // tbProductName
             // 
@@ -450,30 +406,8 @@
             tbProductName.ForeColor = System.Drawing.Color.White;
             tbProductName.Location = new System.Drawing.Point(15, 65);
             tbProductName.Name = "tbProductName";
-            tbProductName.Size = new System.Drawing.Size(385, 38);
+            tbProductName.Size = new System.Drawing.Size(383, 38);
             tbProductName.TabIndex = 47;
-            // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            label7.ForeColor = System.Drawing.Color.FromArgb(224, 224, 224);
-            label7.Location = new System.Drawing.Point(409, 34);
-            label7.Name = "label7";
-            label7.Size = new System.Drawing.Size(64, 31);
-            label7.TabIndex = 39;
-            label7.Text = "Price";
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            label6.ForeColor = System.Drawing.Color.FromArgb(224, 224, 224);
-            label6.Location = new System.Drawing.Point(551, 34);
-            label6.Name = "label6";
-            label6.Size = new System.Drawing.Size(102, 31);
-            label6.TabIndex = 16;
-            label6.Text = "Quantity";
             // 
             // label5
             // 
@@ -489,7 +423,7 @@
             // panel3
             // 
             panel3.BackColor = System.Drawing.Color.FromArgb(18, 18, 18);
-            panel3.Controls.Add(lblPlayingCostTotal);
+            panel3.Controls.Add(lblProductsTotal);
             panel3.Controls.Add(lblGrandTotal);
             panel3.Controls.Add(label16);
             panel3.Controls.Add(label14);
@@ -500,16 +434,16 @@
             panel3.Size = new System.Drawing.Size(805, 120);
             panel3.TabIndex = 34;
             // 
-            // lblPlayingCostTotal
+            // lblProductsTotal
             // 
-            lblPlayingCostTotal.AutoSize = true;
-            lblPlayingCostTotal.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            lblPlayingCostTotal.ForeColor = System.Drawing.Color.White;
-            lblPlayingCostTotal.Location = new System.Drawing.Point(671, 43);
-            lblPlayingCostTotal.Name = "lblPlayingCostTotal";
-            lblPlayingCostTotal.Size = new System.Drawing.Size(55, 31);
-            lblPlayingCostTotal.TabIndex = 20;
-            lblPlayingCostTotal.Text = "5.50";
+            lblProductsTotal.AutoSize = true;
+            lblProductsTotal.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            lblProductsTotal.ForeColor = System.Drawing.Color.White;
+            lblProductsTotal.Location = new System.Drawing.Point(671, 43);
+            lblProductsTotal.Name = "lblProductsTotal";
+            lblProductsTotal.Size = new System.Drawing.Size(55, 31);
+            lblProductsTotal.TabIndex = 20;
+            lblProductsTotal.Text = "5.50";
             // 
             // lblGrandTotal
             // 
@@ -527,7 +461,7 @@
             label16.AutoSize = true;
             label16.Font = new System.Drawing.Font("Segoe UI Semibold", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
             label16.ForeColor = System.Drawing.Color.FromArgb(50, 131, 255);
-            label16.Location = new System.Drawing.Point(494, 74);
+            label16.Location = new System.Drawing.Point(501, 74);
             label16.Name = "label16";
             label16.Size = new System.Drawing.Size(171, 38);
             label16.TabIndex = 18;
@@ -578,10 +512,15 @@
             btnClose.TabIndex = 35;
             btnClose.Text = "Close";
             btnClose.UseVisualStyleBackColor = false;
+            btnClose.Click += btnClose_Click;
             // 
             // errorProvider1
             // 
             errorProvider1.ContainerControl = this;
+            // 
+            // timer1
+            // 
+            timer1.Tick += timer1_Tick;
             // 
             // frmDetails
             // 
@@ -598,6 +537,7 @@
             Controls.Add(panel1);
             Controls.Add(label1);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "frmDetails";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -607,13 +547,13 @@
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvOrders).EndInit();
             panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)nudQuantity).EndInit();
             tcAddProduct.ResumeLayout(false);
-            tabPage2.ResumeLayout(false);
-            tabPage2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)nudQuantityMenu).EndInit();
+            tpMenu.ResumeLayout(false);
+            tpMenu.PerformLayout();
             tpCustom.ResumeLayout(false);
             tpCustom.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)nudQuantityCustom).EndInit();
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
@@ -625,9 +565,9 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label44;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label lblPlayingCostkoko;
+        private System.Windows.Forms.Label lblPricePerHour;
         private System.Windows.Forms.Label lblElapsed;
         private System.Windows.Forms.Label lblStarted;
         private System.Windows.Forms.Label label4;
@@ -644,25 +584,21 @@
         private System.Windows.Forms.Label lblGrandTotal;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.Label lblPlayingCostTotal;
+        private System.Windows.Forms.Label lblProductsTotal;
         private System.Windows.Forms.TabControl tcAddProduct;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TextBox tbPriceMenu;
+        private System.Windows.Forms.TabPage tpMenu;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TabPage tpCustom;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Button btnAddCustom;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox tbPriceCustom;
+        private System.Windows.Forms.TextBox tbPrice;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox cbProducts;
         private System.Windows.Forms.TextBox tbProductName;
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.NumericUpDown nudQuantityMenu;
-        private System.Windows.Forms.NumericUpDown nudQuantityCustom;
-        private System.Windows.Forms.Button btnAddMenu;
+        private System.Windows.Forms.Button btnAdd;
+        private System.Windows.Forms.NumericUpDown nudQuantity;
+        private System.Windows.Forms.Label label12;
     }
 }

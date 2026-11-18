@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAddUpdateUser));
             tbUsername = new System.Windows.Forms.TextBox();
             label3 = new System.Windows.Forms.Label();
             lblTitle = new System.Windows.Forms.Label();
@@ -37,6 +38,8 @@
             tbConfirmPassword = new System.Windows.Forms.TextBox();
             label5 = new System.Windows.Forms.Label();
             groupBox1 = new System.Windows.Forms.GroupBox();
+            label1 = new System.Windows.Forms.Label();
+            customCheckBox1 = new CustomCheckBox();
             label9 = new System.Windows.Forms.Label();
             label8 = new System.Windows.Forms.Label();
             label7 = new System.Windows.Forms.Label();
@@ -52,8 +55,6 @@
             panel1 = new System.Windows.Forms.Panel();
             label10 = new System.Windows.Forms.Label();
             chkIsActive = new CustomCheckBox();
-            label1 = new System.Windows.Forms.Label();
-            customCheckBox1 = new CustomCheckBox();
             groupBox1.SuspendLayout();
             panel1.SuspendLayout();
             SuspendLayout();
@@ -164,6 +165,31 @@
             groupBox1.TabIndex = 17;
             groupBox1.TabStop = false;
             groupBox1.Text = "Permissions";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new System.Drawing.Font("Segoe UI", 12F);
+            label1.ForeColor = System.Drawing.Color.White;
+            label1.Location = new System.Drawing.Point(55, 141);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(165, 28);
+            label1.TabIndex = 31;
+            label1.Text = "Manage Products";
+            // 
+            // customCheckBox1
+            // 
+            customCheckBox1.Enabled = false;
+            customCheckBox1.FlatAppearance.BorderSize = 0;
+            customCheckBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            customCheckBox1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            customCheckBox1.ForeColor = System.Drawing.Color.Lime;
+            customCheckBox1.Location = new System.Drawing.Point(24, 144);
+            customCheckBox1.Name = "customCheckBox1";
+            customCheckBox1.Size = new System.Drawing.Size(25, 25);
+            customCheckBox1.TabIndex = 30;
+            customCheckBox1.Text = "customChecddkBox1";
+            customCheckBox1.UseVisualStyleBackColor = true;
             // 
             // label9
             // 
@@ -353,31 +379,6 @@
             chkIsActive.Text = "customChecddkBox1";
             chkIsActive.UseVisualStyleBackColor = true;
             // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new System.Drawing.Font("Segoe UI", 12F);
-            label1.ForeColor = System.Drawing.Color.White;
-            label1.Location = new System.Drawing.Point(55, 141);
-            label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(165, 28);
-            label1.TabIndex = 31;
-            label1.Text = "Manage Products";
-            // 
-            // customCheckBox1
-            // 
-            customCheckBox1.Enabled = false;
-            customCheckBox1.FlatAppearance.BorderSize = 0;
-            customCheckBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            customCheckBox1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            customCheckBox1.ForeColor = System.Drawing.Color.Lime;
-            customCheckBox1.Location = new System.Drawing.Point(24, 144);
-            customCheckBox1.Name = "customCheckBox1";
-            customCheckBox1.Size = new System.Drawing.Size(25, 25);
-            customCheckBox1.TabIndex = 30;
-            customCheckBox1.Text = "customChecddkBox1";
-            customCheckBox1.UseVisualStyleBackColor = true;
-            // 
             // frmAddUpdateUser
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -399,6 +400,7 @@
             Controls.Add(label3);
             Controls.Add(tbUsername);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             Name = "frmAddUpdateUser";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "Add/Update User";

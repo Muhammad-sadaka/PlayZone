@@ -184,6 +184,7 @@
             Controls.Add(label1);
             Controls.Add(btnAddUser);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "frmUsersManagement";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

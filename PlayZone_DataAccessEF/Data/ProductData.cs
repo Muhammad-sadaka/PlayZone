@@ -13,7 +13,7 @@ namespace PlayZone_DataAccessEF.Data
         {
             using var context = new PlayZoneContext();
             return await context.Products
-                .Select(p => new ProductDTO(p.ProductId, p.ProductName, p.Price, p.StockQuantity, p.Image))
+                .Select(p => new ProductDTO(p.ProductId, p.ProductName, p.Price, p.StockQuantity))
                 .ToListAsync();
         }
 
@@ -22,7 +22,7 @@ namespace PlayZone_DataAccessEF.Data
             using var context = new PlayZoneContext();
             var p = await context.Products.FindAsync(id);
             if (p == null) return null;
-            return new ProductDTO(p.ProductId, p.ProductName, p.Price, p.StockQuantity, p.Image);
+            return new ProductDTO(p.ProductId, p.ProductName, p.Price, p.StockQuantity);
         }
 
         public static async Task<int?> AddAsync(ProductDTO dto)
@@ -32,8 +32,7 @@ namespace PlayZone_DataAccessEF.Data
             {
                 ProductName = dto.ProductName,
                 Price = dto.Price ?? 0,
-                StockQuantity = dto.StockQuantity ?? 0,
-                Image = dto.ImagePath
+                StockQuantity = dto.StockQuantity ?? 0
             };
 
             await context.Products.AddAsync(product);
@@ -50,7 +49,6 @@ namespace PlayZone_DataAccessEF.Data
             existing.ProductName = dto.ProductName;
             existing.Price = dto.Price ?? 0;
             existing.StockQuantity = dto.StockQuantity ?? 0;
-            existing.Image = dto.ImagePath;
 
             context.Products.Update(existing);
             return await context.SaveChangesAsync() > 0;
@@ -70,6 +68,12 @@ namespace PlayZone_DataAccessEF.Data
         {
             using var context = new PlayZoneContext();
             return await context.Products.AnyAsync(p => p.ProductId == id);
+        }
+
+        public static async Task<bool> ExistsAsync(string productName)
+        {
+            using var context = new PlayZoneContext();
+            return await context.Products.AnyAsync(p => p.ProductName == productName);
         }
     }
 }

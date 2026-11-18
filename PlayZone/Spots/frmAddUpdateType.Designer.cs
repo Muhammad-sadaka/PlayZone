@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAddUpdateType));
             lblTitle = new System.Windows.Forms.Label();
             txtTypeName = new System.Windows.Forms.TextBox();
             label3 = new System.Windows.Forms.Label();
@@ -175,6 +176,7 @@
             Controls.Add(txtTypeName);
             Controls.Add(lblTitle);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             Name = "frmAddUpdateType";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "Add/Update Type";

@@ -1,4 +1,5 @@
 ﻿using PlayZone_DataAccessEF.Data;
+using PlayZone_DataAccessEF.Models;
 using SharedDTOs;
 using System;
 using System.Collections.Generic;
@@ -11,16 +12,19 @@ namespace PlayZone_Buisness
         public enum enMode { AddNew = 0, Update = 1 };
         public enMode Mode = enMode.AddNew;
 
-        public ReservationDTO Dto => new ReservationDTO(this.ReservationID, this.CustomerName, this.StartDate, this.EndDate, this.Period, this.TotalPrice, this.SpotTypeID, this.IsActive);
+        public ReservationDTO Dto => new ReservationDTO(this.ReservationID, this.CustomerName, this.StartDate, this.EndDate, this.Period,this.SessionRevenue,this.CafeteriaRevenue, this.TotalPrice, this.SpotID,this.ShiftID);
 
         public int? ReservationID { get; set; }
         public string CustomerName { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public TimeSpan? Period { get; set; }
+        public decimal? SessionRevenue { get; set; }
+        public decimal?  CafeteriaRevenue { get; set; }
         public decimal? TotalPrice { get; set; }
-        public int? SpotTypeID { get; set; }
+        public int? SpotID { get; set; }
         public bool? IsActive { get; set; }
+        public int ShiftID { get; set; }
 
         public clsReservation()
         {
@@ -30,7 +34,7 @@ namespace PlayZone_Buisness
             EndDate = null;
             Period = null;
             TotalPrice = 0;
-            SpotTypeID = -1;
+            SpotID = -1;
             IsActive = true;
             Mode = enMode.AddNew;
         }
@@ -43,8 +47,7 @@ namespace PlayZone_Buisness
             EndDate = dto.EndDate;
             Period = dto.Period;
             TotalPrice = dto.TotalPrice;
-            SpotTypeID = dto.SpotTypeID;
-            IsActive = dto.IsActive;
+            SpotID = dto.SpotID;
             Mode = mode;
         }
 
@@ -87,14 +90,9 @@ namespace PlayZone_Buisness
             return false;
         }
 
-        public static async Task<List<ReservationDTO>> GetAllReservationsAsync()
+        public static async Task<List<ReservationListDTO>> GetAllReservationsAsync()
         {
             return await ReservationData.GetAllAsync();
-        }
-
-        public static async Task<List<ReservationDTO>> GetActiveReservationsAsync()
-        {
-            return await ReservationData.GetActiveReservationsAsync();
         }
 
         public static async Task<bool> DeleteReservationAsync(int reservationID)
@@ -105,6 +103,11 @@ namespace PlayZone_Buisness
         public static async Task<bool> IsReservationExistAsync(int reservationID)
         {
             return await ReservationData.ExistsAsync(reservationID);
+        }
+
+        public static async Task<decimal> TotalReservationPerShiftAsync(int shiftID)
+        {
+            return await ReservationData.TotalReservationPerShiftAsync(shiftID);
         }
     }
 }

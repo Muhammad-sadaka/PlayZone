@@ -1,15 +1,18 @@
-﻿using PlayZone_Buisness; // استبدل بما يناسب طبقة الأعمال لديك
+﻿using PlayZone_Buisness;
+using SharedDTOs;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace PlayZone
 {
     public partial class frmShiftHistory : Form
     {
-        private DataTable _dtShiftHistory;
+        private List<ShiftsListDTO> _ShiftHistory = new();
 
         public frmShiftHistory()
         {
@@ -39,29 +42,18 @@ namespace PlayZone
         private async Task _LoadShiftHistoryData()
         {
             // جلب سجلات الورديات (Shift History) من طبقة الأعمال
-            //_dtShiftHistory = await clsShift.GetAllShiftsHistoryAsync();
-            dgvShiftHistory.DataSource = _dtShiftHistory;
+            _ShiftHistory = await clsShift.GetAllShiftsAsync();
+            dgvShiftHistory.DataSource = _ShiftHistory;
         }
 
         private void _ApplyFilters()
         {
-            if (_dtShiftHistory == null) return;
+            if (_ShiftHistory == null) return;
 
-            string filterExpression = string.Empty;
-
-            // 1. الفلترة حسب الكاشير المختار
-            if (cmbCashier.SelectedValue is int cashierID && cashierID > 0)
-            {
-                string cashierName = cmbCashier.Text;
-                filterExpression = $"Username = '{cashierName}'"; // تأكد أن اسم العمود في الجدول يطابق Username
-            }
-
-            // تطبيق الفلتر على الـ DataView
             try
             {
-                DataView dv = _dtShiftHistory.DefaultView;
-                dv.RowFilter = filterExpression;
-                dgvShiftHistory.DataSource = dv.ToTable();
+                dgvShiftHistory.DataSource = _ShiftHistory.Where(s =>
+                 s.CashierName == cmbCashier.Text).ToList();
             }
             catch (Exception ex)
             {
@@ -82,10 +74,9 @@ namespace PlayZone
 
         private void btnShowAll_Click(object sender, EventArgs e)
         {
-            if (_dtShiftHistory != null)
+            if (_ShiftHistory != null)
             {
-                _dtShiftHistory.DefaultView.RowFilter = string.Empty;
-                dgvShiftHistory.DataSource = _dtShiftHistory;
+                dgvShiftHistory.DataSource = _ShiftHistory;
                 cmbCashier.SelectedIndex = -1;
             }
         }

@@ -1,6 +1,7 @@
 ﻿using PlayZone_Buisness;
 using SharedDTOs;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace PlayZone
 {
     public partial class frmArchives : Form
     {
-        private DataTable _dtArchive;
+        private List<ReservationListDTO> _Archive;
 
         public frmArchives()
         {
@@ -34,15 +35,13 @@ namespace PlayZone
 
         private async Task _LoadArchiveData()
         {
-            // جلب سجلات الأرشيف (الجلسات المكتملة) في DataTable
-            // استبدل الدالة بما يناسب طبقة الأعمال لديك
-            //_dtArchive = await clsReservation.GetCompletedReservationsArchiveAsync();
-            dgvArchive.DataSource = _dtArchive;
+            _Archive = await clsReservation.GetAllReservationsAsync();
+            dgvArchive.DataSource = _Archive;
         }
 
         private void _ApplyFilters()
         {
-            if (_dtArchive == null) return;
+            if (_Archive == null) return;
 
             string filterExpression = string.Empty;
 
@@ -56,15 +55,9 @@ namespace PlayZone
                 string deviceTypeName = cmbDeviceType.Text;
                 filterExpression = $"DeviceTypeName = '{deviceTypeName}'";
             }
-
-            // تطبيق الفلاتر مجتمعة أو منفردة
-            // يمكنك تخصيص أسماء الأعمدة (DateColumnName و DeviceTypeName) بحسب قاعدة بياناتك
             try
             {
-                DataView dv = _dtArchive.DefaultView;
-                // مثال مبسط لدمج الفلترة (حسب متطلبات الأعمدة لديك)
-                dv.RowFilter = filterExpression;
-                dgvArchive.DataSource = dv.ToTable();
+                dgvArchive.DataSource = _Archive;
             }
             catch (Exception ex)
             {
@@ -84,10 +77,9 @@ namespace PlayZone
 
         private void btnShowAll_Click(object sender, EventArgs e)
         {
-            if (_dtArchive != null)
+            if (_Archive != null)
             {
-                _dtArchive.DefaultView.RowFilter = string.Empty;
-                dgvArchive.DataSource = _dtArchive;
+                dgvArchive.DataSource = _Archive;
                 cmbDeviceType.SelectedIndex = -1; 
             }
         }

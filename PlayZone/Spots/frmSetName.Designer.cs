@@ -309,6 +309,7 @@
             Controls.Add(tbPlayerName);
             Controls.Add(btnStartSession);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             Name = "frmSetName";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

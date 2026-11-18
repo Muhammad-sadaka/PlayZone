@@ -273,7 +273,6 @@
             // openShiftToolStripMenuItem
             // 
             openShiftToolStripMenuItem.BackColor = System.Drawing.Color.Black;
-            openShiftToolStripMenuItem.Enabled = false;
             openShiftToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             openShiftToolStripMenuItem.Image = (System.Drawing.Image)resources.GetObject("openShiftToolStripMenuItem.Image");
             openShiftToolStripMenuItem.Name = "openShiftToolStripMenuItem";
@@ -284,6 +283,7 @@
             // closeShiftToolStripMenuItem
             // 
             closeShiftToolStripMenuItem.BackColor = System.Drawing.Color.Black;
+            closeShiftToolStripMenuItem.Enabled = false;
             closeShiftToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             closeShiftToolStripMenuItem.Image = (System.Drawing.Image)resources.GetObject("closeShiftToolStripMenuItem.Image");
             closeShiftToolStripMenuItem.Name = "closeShiftToolStripMenuItem";
@@ -652,6 +652,7 @@
             Controls.Add(menuStrip1);
             Controls.Add(tabControl1);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             Name = "frmMain";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

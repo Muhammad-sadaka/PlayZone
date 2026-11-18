@@ -13,5 +13,7 @@ public partial class Spot
 
     public bool Active { get; set; }
 
+    public virtual ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
+
     public virtual SpotType SpotType { get; set; } = null!;
 }

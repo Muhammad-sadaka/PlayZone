@@ -10,7 +10,7 @@ namespace PlayZone
     public partial class frmCloseShift : Form
     {
         private readonly int _ShiftID;
-        private clsShift? _Summary;
+        private ShiftSummaryDTO? _Summary;
 
         // True when the shift was closed successfully (the caller can log the user out)
         public bool ShiftClosed { get; private set; } = false;
@@ -114,8 +114,7 @@ namespace PlayZone
 
             try
             {
-                _Summary.ActualCash = closingCash;
-                if (await _Summary.SaveAsync()/*clsShift.CloseShiftAsync(_ShiftID, closingCash, _Summary.ExpectedCash)*/)
+                if (await clsShift.CloseShiftAsync(_ShiftID, closingCash))
                 {
                     ShiftClosed = true;
                     MessageBox.Show("Shift closed successfully.", "Done",

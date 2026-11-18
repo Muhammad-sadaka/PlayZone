@@ -52,7 +52,7 @@
             contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { addNewToolStripMenuItem, updateToolStripMenuItem, deleteToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new System.Drawing.Size(215, 128);
+            contextMenuStrip1.Size = new System.Drawing.Size(167, 100);
             // 
             // addNewToolStripMenuItem
             // 
@@ -60,7 +60,7 @@
             addNewToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             addNewToolStripMenuItem.Image = (System.Drawing.Image)resources.GetObject("addNewToolStripMenuItem.Image");
             addNewToolStripMenuItem.Name = "addNewToolStripMenuItem";
-            addNewToolStripMenuItem.Size = new System.Drawing.Size(214, 32);
+            addNewToolStripMenuItem.Size = new System.Drawing.Size(166, 32);
             addNewToolStripMenuItem.Text = "Add New";
             addNewToolStripMenuItem.Click += addNewToolStripMenuItem_Click;
             // 
@@ -70,7 +70,7 @@
             updateToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             updateToolStripMenuItem.Image = (System.Drawing.Image)resources.GetObject("updateToolStripMenuItem.Image");
             updateToolStripMenuItem.Name = "updateToolStripMenuItem";
-            updateToolStripMenuItem.Size = new System.Drawing.Size(214, 32);
+            updateToolStripMenuItem.Size = new System.Drawing.Size(166, 32);
             updateToolStripMenuItem.Text = "Update";
             updateToolStripMenuItem.Click += updateToolStripMenuItem_Click;
             // 
@@ -80,7 +80,7 @@
             deleteToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             deleteToolStripMenuItem.Image = (System.Drawing.Image)resources.GetObject("deleteToolStripMenuItem.Image");
             deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            deleteToolStripMenuItem.Size = new System.Drawing.Size(214, 32);
+            deleteToolStripMenuItem.Size = new System.Drawing.Size(166, 32);
             deleteToolStripMenuItem.Text = "Delete";
             deleteToolStripMenuItem.Click += deleteToolStripMenuItem_Click;
             // 
@@ -168,6 +168,7 @@
             Controls.Add(label1);
             Controls.Add(btnAddNew);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "frmSpotTypesManagement";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

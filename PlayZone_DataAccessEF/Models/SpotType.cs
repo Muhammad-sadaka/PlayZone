@@ -13,7 +13,5 @@ public partial class SpotType
 
     public string? Image { get; set; }
 
-    public virtual ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
-
     public virtual ICollection<Spot> Spots { get; set; } = new List<Spot>();
 }

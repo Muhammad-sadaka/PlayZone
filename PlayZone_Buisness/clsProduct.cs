@@ -10,13 +10,12 @@ namespace PlayZone_Buisness
         public enum enMode { AddNew = 0, Update = 1 };
         public enMode Mode = enMode.AddNew;
 
-        public ProductDTO Dto => new ProductDTO(this.ProductID, this.ProductName, this.Price, this.StockQuantity, this.ImagePath);
+        public ProductDTO Dto => new ProductDTO(this.ProductID, this.ProductName, this.Price, this.StockQuantity);
 
         public int? ProductID { get; set; }
         public string ProductName { get; set; }
         public decimal? Price { get; set; }
         public int? StockQuantity { get; set; }
-        public string ImagePath { get; set; }
 
         public clsProduct()
         {
@@ -24,7 +23,6 @@ namespace PlayZone_Buisness
             ProductName = string.Empty;
             Price = 0;
             StockQuantity = 0;
-            ImagePath = string.Empty;
             Mode = enMode.AddNew;
         }
 
@@ -34,7 +32,6 @@ namespace PlayZone_Buisness
             ProductName = dto.ProductName;
             Price = dto.Price;
             StockQuantity = dto.StockQuantity;
-            ImagePath = dto.ImagePath;
             Mode = mode;
         }
 
@@ -90,6 +87,10 @@ namespace PlayZone_Buisness
         public static async Task<bool> IsProductExistAsync(int productID)
         {
             return await ProductData.ExistsAsync(productID);
+        }
+        public static async Task<bool> IsProductExistAsync(string productName)
+        {
+            return await ProductData.ExistsAsync(productName);
         }
     }
 }

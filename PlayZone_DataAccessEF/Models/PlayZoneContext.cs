@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace PlayZone_DataAccessEF.Models;
 
@@ -33,14 +32,8 @@ public partial class PlayZoneContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            optionsBuilder.UseSqlServer(new ConfigurationBuilder()
-                .AddJsonFile(Path.Combine(AppContext.BaseDirectory, "appsettings.json"), optional: false, reloadOnChange: true)
-                .Build().GetConnectionString("DefaultConnection"));
-        }
-    }
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=.;Database=PlayZone;Integrated Security=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -49,7 +42,6 @@ public partial class PlayZoneContext : DbContext
             entity.HasKey(e => e.ProductId).HasName("PK__Products__B40CC6ED314AC471");
 
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
-            entity.Property(e => e.Image).IsUnicode(false);
             entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.ProductName).HasMaxLength(100);
         });
@@ -61,9 +53,8 @@ public partial class PlayZoneContext : DbContext
             entity.Property(e => e.ReservationId).HasColumnName("ReservationID");
             entity.Property(e => e.CustomerName).HasMaxLength(100);
             entity.Property(e => e.EndDate).HasColumnType("datetime");
-            entity.Property(e => e.IsActive).HasDefaultValue(true);
             entity.Property(e => e.ShiftId).HasColumnName("ShiftID");
-            entity.Property(e => e.SpotTypeId).HasColumnName("SpotTypeID");
+            entity.Property(e => e.SpotId).HasColumnName("SpotID");
             entity.Property(e => e.StartDate).HasColumnType("datetime");
             entity.Property(e => e.TotalPrice)
                 .HasDefaultValue(0m)
@@ -74,9 +65,9 @@ public partial class PlayZoneContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Reservations_Shifts");
 
-            entity.HasOne(d => d.SpotType).WithMany(p => p.Reservations)
-                .HasForeignKey(d => d.SpotTypeId)
-                .HasConstraintName("FK__Reservati__SpotT__60A75C0F");
+            entity.HasOne(d => d.Spot).WithMany(p => p.Reservations)
+                .HasForeignKey(d => d.SpotId)
+                .HasConstraintName("FK_Reservations_Spots");
         });
 
         modelBuilder.Entity<ReservationProduct>(entity =>

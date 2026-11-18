@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSettings));
             openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             panel1 = new System.Windows.Forms.Panel();
             Phone = new System.Windows.Forms.LinkLabel();
@@ -152,6 +153,7 @@
             ClientSize = new System.Drawing.Size(695, 810);
             Controls.Add(panel1);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             Name = "frmSettings";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

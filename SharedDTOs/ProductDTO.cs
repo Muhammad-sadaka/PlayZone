@@ -16,16 +16,12 @@ namespace SharedDTOs
         [Column("Stock Quantity")]
         public int? StockQuantity { set; get; }
 
-        [Column("Image Path")]
-        public string ImagePath { set; get; }
-
-        public ProductDTO(int? ProductID, string ProductName, decimal? Price, int? StockQuantity, string ImagePath)
+        public ProductDTO(int? ProductID, string ProductName, decimal? Price, int? StockQuantity)
         {
             this.ProductID = ProductID;
             this.ProductName = ProductName;
             this.Price = Price;
             this.StockQuantity = StockQuantity;
-            this.ImagePath = ImagePath;
         }
     }
 }

@@ -3,18 +3,34 @@ using PlayZone_DataAccessEF.Models;
 using SharedDTOs;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Threading.Tasks;
 
 namespace PlayZone_DataAccessEF.Data
 {
     public static class ReservationData
     {
-        public static async Task<List<ReservationDTO>> GetAllAsync()
+        public static async Task<List<ReservationListDTO>> GetAllAsync()
         {
             using var context = new PlayZoneContext();
-            return await context.Reservations
-                .Select(r => new ReservationDTO(r.ReservationId, r.CustomerName, r.StartDate, r.EndDate, r.Period, r.TotalPrice, r.SpotTypeId, r.IsActive))
-                .ToListAsync();
+
+            var report =
+            from r in context.Reservations
+            join sh in context.Shifts on r.ShiftId equals sh.ShiftId
+            join s in context.Spots on r.SpotId equals s.SpotId
+            join st in context.SpotTypes on s.SpotTypeId equals st.SpotTypeId
+            select new ReservationListDTO
+            (
+                 r.ReservationId,
+                 r.CustomerName,
+                 st.SpotTypeName,
+                 s.SpotName,
+                 r.StartDate,
+                 r.EndDate,
+                 r.Period,
+                 r.TotalPrice
+            );
+            return await report.ToListAsync();
         }
 
         public static async Task<ReservationDTO?> GetByIdAsync(int id)
@@ -22,16 +38,7 @@ namespace PlayZone_DataAccessEF.Data
             using var context = new PlayZoneContext();
             var r = await context.Reservations.FindAsync(id);
             if (r == null) return null;
-            return new ReservationDTO(r.ReservationId, r.CustomerName, r.StartDate, r.EndDate, r.Period, r.TotalPrice, r.SpotTypeId, r.IsActive);
-        }
-
-        public static async Task<List<ReservationDTO>> GetActiveReservationsAsync()
-        {
-            using var context = new PlayZoneContext();
-            return await context.Reservations
-                .Where(r => r.IsActive.Value)
-                .Select(r => new ReservationDTO(r.ReservationId, r.CustomerName, r.StartDate, r.EndDate, r.Period, r.TotalPrice, r.SpotTypeId, r.IsActive))
-                .ToListAsync();
+            return new ReservationDTO(r.ReservationId, r.CustomerName, r.StartDate, r.EndDate, r.Period,r.SessionRevenue,r.SessionRevenue, r.TotalPrice, r.SpotId,r.ShiftId);
         }
 
         public static async Task<int?> AddAsync(ReservationDTO dto)
@@ -43,9 +50,11 @@ namespace PlayZone_DataAccessEF.Data
                 StartDate = dto.StartDate,
                 EndDate = dto.EndDate,
                 Period = dto.Period,
+                SessionRevenue = dto.SessionRevenue,
+                CafeteriaRevenue = dto.CafeteriaRevenue,
                 TotalPrice = dto.TotalPrice,
-                SpotTypeId = dto.SpotTypeID,
-                IsActive = dto.IsActive
+                SpotId = dto.SpotID,
+                ShiftId = dto.ShiftID
             };
 
             await context.Reservations.AddAsync(reservation);
@@ -63,9 +72,11 @@ namespace PlayZone_DataAccessEF.Data
             existing.StartDate = dto.StartDate;
             existing.EndDate = dto.EndDate;
             existing.Period = dto.Period;
+            existing.SessionRevenue = dto.SessionRevenue;
+            existing.CafeteriaRevenue = dto.CafeteriaRevenue;
             existing.TotalPrice = dto.TotalPrice;
-            existing.SpotTypeId = dto.SpotTypeID;
-            existing.IsActive = dto.IsActive;
+            existing.SpotId = dto.SpotID;
+            existing.ShiftId = dto.ShiftID;
 
             context.Reservations.Update(existing);
             return await context.SaveChangesAsync() > 0;
@@ -85,6 +96,15 @@ namespace PlayZone_DataAccessEF.Data
         {
             using var context = new PlayZoneContext();
             return await context.Reservations.AnyAsync(r => r.ReservationId == id);
+        }
+
+        public static async Task<decimal> TotalReservationPerShiftAsync(int shiftID)
+        {
+            using var context = new PlayZoneContext();
+
+            return await context.Reservations
+                .Where(r => r.ShiftId == shiftID)
+                .SumAsync(r => (decimal?)r.TotalPrice) ?? 0m;
         }
     }
 }

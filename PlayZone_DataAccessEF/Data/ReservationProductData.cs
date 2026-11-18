@@ -4,18 +4,30 @@ using SharedDTOs;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace PlayZone_DataAccessEF.Data
 {
     public static class ReservationProductData
     {
-        public static async Task<List<ReservationProductDTO>> GetAllAsync(int reservationId)
+        public static async Task<List<ReservationProductListDTO>> GetAllAsync(int reservationId)
         {
             using var context = new PlayZoneContext();
-            return await context.ReservationProducts
-                .Where(rp => rp.ReservationId == reservationId)
-                .Select(rp => new ReservationProductDTO(rp.OrderProductId, rp.ReservationId, rp.ProductId, rp.Quantity, rp.TotalPrice))
-                .ToListAsync();
+            var report =
+            from rp in context.ReservationProducts.Where(rp => rp.ReservationId == reservationId)
+            join p in context.Products
+                on rp.ProductId equals p.ProductId
+                into productGroup
+            from p in productGroup.DefaultIfEmpty()
+            select new ReservationProductListDTO
+            (
+                rp.OrderProductId,
+                rp.Name == null ? p.ProductName : rp.Name,
+                rp.Quantity,
+                rp.TotalPrice / rp.Quantity,
+                rp.TotalPrice
+            );
+            return await report.ToListAsync();
         }
 
         public static async Task<List<ReservationProductDTO>> GetByReservationIdAsync(int reservationId)
@@ -23,7 +35,7 @@ namespace PlayZone_DataAccessEF.Data
             using var context = new PlayZoneContext();
             return await context.ReservationProducts
                 .Where(rp => rp.ReservationId == reservationId)
-                .Select(rp => new ReservationProductDTO(rp.OrderProductId, rp.ReservationId, rp.ProductId, rp.Quantity, rp.TotalPrice))
+                .Select(rp => new ReservationProductDTO(rp.OrderProductId, rp.ReservationId, rp.ProductId, rp.Quantity, rp.TotalPrice, rp.Name))
                 .ToListAsync();
         }
 
@@ -32,7 +44,7 @@ namespace PlayZone_DataAccessEF.Data
             using var context = new PlayZoneContext();
             var rp = await context.ReservationProducts.FindAsync(id);
             if (rp == null) return null;
-            return new ReservationProductDTO(rp.OrderProductId, rp.ReservationId, rp.ProductId, rp.Quantity, rp.TotalPrice);
+            return new ReservationProductDTO(rp.OrderProductId, rp.ReservationId, rp.ProductId, rp.Quantity, rp.TotalPrice,rp.Name);
         }
 
         public static async Task<int?> AddAsync(ReservationProductDTO dto)
@@ -43,9 +55,10 @@ namespace PlayZone_DataAccessEF.Data
                 ReservationId = dto.ReservationID,
                 ProductId = dto.ProductID,
                 Quantity = dto.Quantity,
-                TotalPrice = dto.TotalPrice
+                TotalPrice = dto.TotalPrice,
+                Name = dto.ProductName
             };
-
+            
             await context.ReservationProducts.AddAsync(reservationProduct);
             await context.SaveChangesAsync();
             return reservationProduct.OrderProductId;

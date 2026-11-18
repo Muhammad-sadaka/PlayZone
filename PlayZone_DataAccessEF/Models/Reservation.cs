@@ -14,12 +14,12 @@ public partial class Reservation
     public DateTime? EndDate { get; set; }
 
     public TimeSpan? Period { get; set; }
-
     public decimal? TotalPrice { get; set; }
+    public decimal? SessionRevenue { get; set; }
 
-    public int? SpotTypeId { get; set; }
+    public decimal? CafeteriaRevenue { get; set; }
 
-    public bool? IsActive { get; set; }
+    public int? SpotId { get; set; }
 
     public int ShiftId { get; set; }
 
@@ -27,5 +27,5 @@ public partial class Reservation
 
     public virtual Shift Shift { get; set; } = null!;
 
-    public virtual SpotType? SpotType { get; set; }
+    public virtual Spot? Spot { get; set; }
 }

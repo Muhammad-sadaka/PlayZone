@@ -208,6 +208,7 @@
             ClientSize = new System.Drawing.Size(795, 456);
             Controls.Add(panel1);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             Name = "frmActivation";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "frmActivation";

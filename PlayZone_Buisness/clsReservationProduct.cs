@@ -10,13 +10,14 @@ namespace PlayZone_Buisness
         public enum enMode { AddNew = 0, Update = 1 };
         public enMode Mode = enMode.AddNew;
 
-        public ReservationProductDTO Dto => new ReservationProductDTO(this.OrderProductID, this.ReservationID, this.ProductID, this.Quantity, this.TotalPrice);
+        public ReservationProductDTO Dto => new ReservationProductDTO(this.OrderProductID, this.ReservationID, this.ProductID, this.Quantity, this.TotalPrice,this.ProductName);
 
         public int? OrderProductID { get; set; }
         public int? ReservationID { get; set; }
         public int? ProductID { get; set; }
         public int Quantity { get; set; }
         public decimal TotalPrice { get; set; }
+        public string? ProductName {  get; set; }
 
         public clsReservationProduct()
         {
@@ -25,6 +26,7 @@ namespace PlayZone_Buisness
             ProductID = -1;
             Quantity = 0;
             TotalPrice = 0;
+            ProductName = null;
             Mode = enMode.AddNew;
         }
 
@@ -35,6 +37,7 @@ namespace PlayZone_Buisness
             ProductID = dto.ProductID;
             Quantity = dto.Quantity;
             TotalPrice = dto.TotalPrice;
+            ProductName = dto.ProductName;
             Mode = mode;
         }
 
@@ -77,7 +80,7 @@ namespace PlayZone_Buisness
             return false;
         }
 
-        public static async Task<List<ReservationProductDTO>> GetAllReservationProductsAsync(int reservationId)
+        public static async Task<List<ReservationProductListDTO>> GetAllReservationProductsAsync(int reservationId)
         {
             return await ReservationProductData.GetAllAsync(reservationId);
         }

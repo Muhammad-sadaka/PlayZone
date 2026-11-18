@@ -13,7 +13,5 @@ public partial class Product
 
     public int StockQuantity { get; set; }
 
-    public string? Image { get; set; }
-
     public virtual ICollection<ReservationProduct> ReservationProducts { get; set; } = new List<ReservationProduct>();
 }

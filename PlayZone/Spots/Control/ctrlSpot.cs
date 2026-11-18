@@ -16,13 +16,16 @@ namespace PlayZone
         // Used by frmMain to block Exit / Log Out / Close Shift
         public bool IsBusy => _State == enState.InUse || _State == enState.Paused;
 
-        private bool _LockMode = false;
+        private bool Opened = false;
 
         private string _PlayerName;
         private int? _DurationMinutes;          // null = Open Time
         private int _TotalSeconds = 0;          // actual play seconds (excluding pauses)
         private bool _TimeUpRaised = false;
         private bool _BlinkOn = false;
+        private decimal _CafeteriaRevenue = 0;
+        private decimal _SessionRevenue = 0;
+        private decimal _GrandTotalPrice = 0;
 
         private clsSpot _Spot = new clsSpot();
         private clsReservation _Reservation = new clsReservation();
@@ -95,11 +98,9 @@ namespace PlayZone
                 _ => "In Use"
             };
 
-            bool active = IsBusy;
-
             lblOutOfOrder.Visible = panel4.Visible = _State == enState.OutOfOrder;
 
-            if (active)
+            if (IsBusy)
             {
                 lblPlayerName.Text = _PlayerName;
                 lblStarted.Text = $"{_Reservation.StartDate:dd/MM/yyyy hh:mm tt}";
@@ -113,16 +114,15 @@ namespace PlayZone
             }
 
             // Start button doubles as Resume while paused
-            btnStart.Visible = _State == enState.Available || _State == enState.Paused;
-            btnStart.Text = _State == enState.Paused ? "Resume" : "Start";
-            btnPause.Visible = active;
-            lblPlayerName.Visible = active;
+            btnStart.Visible = _State != enState.InUse;
+            btnPause.Visible = IsBusy;
+            lblPlayerName.Visible = IsBusy;
 
             // Lock mode: everything is locked, and it survives state changes
-            btnStart.Enabled = !_LockMode;
-            btnPause.Enabled = _State == enState.InUse && !_LockMode;
-            btnEnd.Enabled = active && !_LockMode;
-            btnDetatils.Enabled = active && !_LockMode;
+            btnStart.Enabled = _State != enState.OutOfOrder && Opened;
+            //btnPause.Enabled = _State == enState.InUse && !_LockMode;
+            btnEnd.Enabled = _State != enState.OutOfOrder && IsBusy;
+            btnDetatils.Enabled = _State != enState.OutOfOrder && IsBusy;
         }
 
         // ============ Start / Resume ============
@@ -149,7 +149,8 @@ namespace PlayZone
             {
                 CustomerName = playerName,
                 StartDate = DateTime.Now,
-                SpotTypeID = _Spot.SpotTypeID
+                SpotID = _Spot.SpotTypeID,
+                ShiftID = Convert.ToInt32(Parent.Tag)
             };
 
             // The timer starts only if saving succeeds
@@ -244,10 +245,10 @@ namespace PlayZone
 
             _Reservation.EndDate = DateTime.Now;
             _Reservation.Period = TimeSpan.FromSeconds(_TotalSeconds);
-            _Reservation.TotalPrice = Math.Round(
-                _Spot.SpotType.PricePerHour.Value * (Convert.ToDecimal(_TotalSeconds) / 3600m), 2);
-            _Reservation.Mode = clsReservation.enMode.Update;
-
+            _Reservation.SessionRevenue = _SessionRevenue;
+            _Reservation.CafeteriaRevenue = _CafeteriaRevenue;
+            _Reservation.TotalPrice = _GrandTotalPrice;
+            
             if (!await _Reservation.SaveAsync())
             {
                 MessageBox.Show("Failed to update the reservation.", "Error",
@@ -259,12 +260,13 @@ namespace PlayZone
                 return;
             }
 
-            MessageBox.Show(
-                $"\nSpot Type: {_Spot.SpotType.SpotTypeName}\nSpot Number: {this.Tag}" +
-                $"\nDuration of play: {_Reservation.Period:hh\\:mm\\:ss}" +
-                $"\nPrice Per Hour: {_Spot.SpotType.PricePerHour:0.00}" +
-                $"\nTotal Price: {_Reservation.TotalPrice:0.00}",
-                "Reservation Details", MessageBoxButtons.OK);
+            DateTime effectiveStart = DateTime.Now - TimeSpan.FromSeconds(_TotalSeconds);
+
+            frmDetails frm = new frmDetails(_Reservation.ReservationID.Value, _Spot.SpotType.SpotTypeName,
+            $"Spot {this.Tag}", _PlayerName, effectiveStart, _Spot.SpotType.PricePerHour.Value,true);
+             frm.DataBack += GetGrandTotalPrice;
+             frm.ShowDialog();
+
 
             ResetControl();
         }
@@ -287,27 +289,20 @@ namespace PlayZone
             DateTime effectiveStart = DateTime.Now - TimeSpan.FromSeconds(_TotalSeconds);
 
             new frmDetails(_Reservation.ReservationID.Value, _Spot.SpotType.SpotTypeName,
-                $"Spot {this.Tag}", _PlayerName, effectiveStart, _Spot.SpotType.PricePerHour.Value)
-                .ShowDialog();
+             $"Spot {this.Tag}", _PlayerName, effectiveStart, _Spot.SpotType.PricePerHour.Value)
+             .ShowDialog();
         }
 
-        // ============ Out of order / Admin mode ============
-        public void SetOutOfOrder(bool value)
+        void GetGrandTotalPrice(object sender, decimal sessionRevenue, decimal cafeteriaRevenue, decimal grandTotal)
         {
-            if (IsBusy)
-            {
-                MessageBox.Show("The spot is busy! End the session first and try again.", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            _State = value ? enState.OutOfOrder : enState.Available;
-            _ApplyState();
+            _CafeteriaRevenue = cafeteriaRevenue;
+            _SessionRevenue = sessionRevenue;
+            _GrandTotalPrice = grandTotal;
         }
 
-        public void LockMode(bool Lock)
+        public void OpenMode(bool opened)
         {
-            _LockMode = Lock;
+            Opened = opened;
             _ApplyState();
         }
     }

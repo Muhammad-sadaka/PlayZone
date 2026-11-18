@@ -11,26 +11,14 @@ namespace PlayZone
         private enum enRole { Owner = 1, Admin = 2, Cashier = 3 }
 
         private readonly clsUser _currentUser;
-        private readonly Form? _shiftForm;   // Cashier
         private readonly Form? _loginForm;   // Admin / Owner
         private bool _forceClose = false;    // skips the running-spots check on FormClosing
 
-
-        public frmMain(Form loginForm, clsUser currentUser) : this(currentUser)
-        {
-            _loginForm = loginForm;
-            LockSpots();
-        }
-
-        public frmMain(clsUser currentUser, Form shiftForm) : this(currentUser)
-        {
-            _shiftForm = shiftForm;
-        }
-
-        private frmMain(clsUser currentUser)
+        public frmMain(clsUser currentUser, Form loginForm)
         {
             InitializeComponent();
             _currentUser = currentUser;
+            _loginForm = loginForm;
             this.FormClosing += frmMain_FormClosing;
         }
 
@@ -68,24 +56,14 @@ namespace PlayZone
             // Cashier (and any unknown role): Open/Close Shift, General Settings, Log Out, Exit only
             foreach (var item in AdminOnlyItems)
                 item.Visible = false;
-
-            //openShiftToolStripMenuItem.Enabled = false;
-            //closeShiftToolStripMenuItem.Enabled = true;
         }
 
-        void LockSpots()
+        void LockSpotes()
         {
-            //if (IsAdminOrOwner) // cut
-            //{
-            // Full access. No shift is open yet, so the spots are locked.
             openShiftToolStripMenuItem.Enabled = true;
             closeShiftToolStripMenuItem.Enabled = false;
-
             foreach (ctrlSpot spot in GetAllSpots())
-                spot.LockMode(true);
-
-            //   return;
-            // }// cut
+                spot.OpenMode(false);
         }
 
         void OpenSpotes()
@@ -93,7 +71,7 @@ namespace PlayZone
             openShiftToolStripMenuItem.Enabled = false;
             closeShiftToolStripMenuItem.Enabled = true;
             foreach (ctrlSpot spot in GetAllSpots())
-                spot.LockMode(false);
+                spot.OpenMode(true);
         }
 
         // Safety net: a cashier can't open admin forms even if an item becomes visible
@@ -187,11 +165,9 @@ namespace PlayZone
             if (BlockIfSpotsRunning("log out"))
                 return;
 
-            Form? next = _shiftForm ?? _loginForm;   // cashier -> shift form, admin/owner -> login form
-
             _forceClose = true;
             this.Close();
-            next?.Show();
+            _loginForm.Show();
         }
 
         private void generalSettingsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -202,9 +178,16 @@ namespace PlayZone
 
         private void openShiftToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using var frm = new frmShift(_currentUser, _loginForm,true);
+            using var frm = new frmShift(_currentUser);
+            frm.DataBack += (s,shiftID) => GetShiftID(shiftID);
             frm.ShowDialog();
             OpenSpotes();
+
+        }
+
+        private void GetShiftID(int shiftID)
+        {
+            tabPage1.Tag = tabPage2.Tag = shiftID;
         }
 
         private void closeShiftToolStripMenuItem_Click(object sender, EventArgs e)
@@ -212,8 +195,9 @@ namespace PlayZone
             if (BlockIfSpotsRunning("close the shift"))
                 return;
 
-            using var frm = new frmCloseShift(0);
+            using var frm = new frmCloseShift(Convert.ToInt32( tabPage1.Tag));
             frm.ShowDialog();
+            LockSpotes();
         }
 
         // ============ Menu: Admin / Owner only ============

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAddUpdateProduct));
             lblTitle = new System.Windows.Forms.Label();
             lblSubtitle = new System.Windows.Forms.Label();
             label6 = new System.Windows.Forms.Label();
@@ -178,6 +179,7 @@
             Controls.Add(lblSubtitle);
             Controls.Add(lblTitle);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "frmAddUpdateProduct";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
