@@ -25,4 +25,20 @@ namespace SharedDTOs
             ImagePath = imagePath;
         }
     }
+
+    public class SpotTypesListDTO
+    {
+        public int? SpotTypeID { set; get; }
+        public string SpotTypeName { set; get; }
+        public decimal? PricePerHour { set; get; }
+        public int? SpotsCount { set; get; }
+
+        public SpotTypesListDTO(int? spotTypeID, string spotTypeName, decimal? pricePerHour, int? spotsCount)
+        {
+            SpotTypeID = spotTypeID;
+            SpotTypeName = spotTypeName;
+            PricePerHour = pricePerHour;
+            SpotsCount = spotsCount;
+        }
+    }
 }

@@ -190,6 +190,7 @@ namespace PlayZone
                 chkViewReports.Checked = true;
                 chkManageSpotTypes.Checked = true;
                 chkManageUsers.Checked = true;
+                chkManageProducts.Checked = true;
             }
             else
             {
@@ -197,6 +198,7 @@ namespace PlayZone
                 chkViewReports.Checked = false;
                 chkManageSpotTypes.Checked = true;
                 chkManageUsers.Checked = false;
+                chkManageProducts.Checked = false;
             }
 
 

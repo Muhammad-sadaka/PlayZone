@@ -90,9 +90,9 @@
             btnAddNew.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnAddNew.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             btnAddNew.ForeColor = System.Drawing.Color.White;
-            btnAddNew.Location = new System.Drawing.Point(310, 112);
+            btnAddNew.Location = new System.Drawing.Point(589, 121);
             btnAddNew.Name = "btnAddNew";
-            btnAddNew.Size = new System.Drawing.Size(243, 41);
+            btnAddNew.Size = new System.Drawing.Size(167, 41);
             btnAddNew.TabIndex = 24;
             btnAddNew.Text = "Add New";
             btnAddNew.UseVisualStyleBackColor = false;
@@ -154,16 +154,15 @@
             dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(32, 32, 32);
             dgvSpotTypes.RowsDefaultCellStyle = dataGridViewCellStyle5;
             dgvSpotTypes.RowTemplate.Height = 26;
-            dgvSpotTypes.Size = new System.Drawing.Size(541, 449);
+            dgvSpotTypes.Size = new System.Drawing.Size(744, 449);
             dgvSpotTypes.TabIndex = 27;
-            dgvSpotTypes.CellContentClick += dgvSpotTypes_CellContentClick;
             // 
             // frmSpotTypesManagement
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.FromArgb(32, 32, 32);
-            ClientSize = new System.Drawing.Size(565, 631);
+            ClientSize = new System.Drawing.Size(768, 631);
             Controls.Add(dgvSpotTypes);
             Controls.Add(label1);
             Controls.Add(btnAddNew);

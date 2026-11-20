@@ -9,12 +9,40 @@ namespace PlayZone_DataAccessEF.Data
 {
     public static class SpotTypeData
     {
-        public static async Task<List<SpotTypeDTO>> GetAllAsync()
+        public static async Task<List<SpotTypesListDTO>> GetAllAsync()
         {
             using var context = new PlayZoneContext();
-            return await context.SpotTypes
-                .Select(s => new SpotTypeDTO(s.SpotTypeId, s.SpotTypeName, s.PricePerHour, s.Image))
-                .ToListAsync();
+
+            //return await context.SpotTypes
+            //    .Join(context.Spots,
+            //        SpotTypes => SpotTypes.SpotTypeId,
+            //       Spots => Spots.SpotTypeId,
+            //        (SpotTypes, Spots) => new SpotTypesListDTO
+            //        (
+            //           SpotTypes.SpotTypeId,
+            //           SpotTypes.SpotTypeName,
+            //           SpotTypes.PricePerHour,
+            //           Spots.Count()
+            //        ).GroupBy(s => s.SpotTypeId)
+            //   .ToListAsync();
+
+
+
+            //var report =
+            //from Spots in context.Spots //.Where(s => s.ReservationId == reservationId)
+            //join SpotTypes in context.SpotTypes
+            //    on Spots.SpotTypeId equals SpotTypes.SpotTypeId
+            //    into Group
+            //from SpotTypes in Group.DefaultIfEmpty()
+            //select new SpotTypesListDTO
+            //(
+            //    SpotTypes.SpotTypeId,
+            //    SpotTypes.SpotTypeName,
+            //    SpotTypes.PricePerHour,
+            //    Spots.
+            //);
+            //return await report.ToListAsync();
+            return null;
         }
 
         public static async Task<SpotTypeDTO?> GetByIdAsync(int id)

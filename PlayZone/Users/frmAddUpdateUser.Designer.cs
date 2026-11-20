@@ -39,7 +39,7 @@
             label5 = new System.Windows.Forms.Label();
             groupBox1 = new System.Windows.Forms.GroupBox();
             label1 = new System.Windows.Forms.Label();
-            customCheckBox1 = new CustomCheckBox();
+            chkManageProducts = new CustomCheckBox();
             label9 = new System.Windows.Forms.Label();
             label8 = new System.Windows.Forms.Label();
             label7 = new System.Windows.Forms.Label();
@@ -148,7 +148,7 @@
             // 
             groupBox1.BackColor = System.Drawing.Color.FromArgb(18, 18, 18);
             groupBox1.Controls.Add(label1);
-            groupBox1.Controls.Add(customCheckBox1);
+            groupBox1.Controls.Add(chkManageProducts);
             groupBox1.Controls.Add(label9);
             groupBox1.Controls.Add(label8);
             groupBox1.Controls.Add(label7);
@@ -177,19 +177,19 @@
             label1.TabIndex = 31;
             label1.Text = "Manage Products";
             // 
-            // customCheckBox1
+            // chkManageProducts
             // 
-            customCheckBox1.Enabled = false;
-            customCheckBox1.FlatAppearance.BorderSize = 0;
-            customCheckBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            customCheckBox1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            customCheckBox1.ForeColor = System.Drawing.Color.Lime;
-            customCheckBox1.Location = new System.Drawing.Point(24, 144);
-            customCheckBox1.Name = "customCheckBox1";
-            customCheckBox1.Size = new System.Drawing.Size(25, 25);
-            customCheckBox1.TabIndex = 30;
-            customCheckBox1.Text = "customChecddkBox1";
-            customCheckBox1.UseVisualStyleBackColor = true;
+            chkManageProducts.Enabled = false;
+            chkManageProducts.FlatAppearance.BorderSize = 0;
+            chkManageProducts.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            chkManageProducts.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            chkManageProducts.ForeColor = System.Drawing.Color.Lime;
+            chkManageProducts.Location = new System.Drawing.Point(24, 144);
+            chkManageProducts.Name = "chkManageProducts";
+            chkManageProducts.Size = new System.Drawing.Size(25, 25);
+            chkManageProducts.TabIndex = 30;
+            chkManageProducts.Text = "customChecddkBox1";
+            chkManageProducts.UseVisualStyleBackColor = true;
             // 
             // label9
             // 
@@ -440,6 +440,6 @@
         private System.Windows.Forms.Label label10;
         private CustomCheckBox chkIsActive;
         private System.Windows.Forms.Label label1;
-        private CustomCheckBox customCheckBox1;
+        private CustomCheckBox chkManageProducts;
     }
 }

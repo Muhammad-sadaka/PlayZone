@@ -20,10 +20,48 @@ namespace PlayZone
 
         private async void frmSpotTypesManagement_Load(object sender, EventArgs e)
         {
+            _SetupGrid();
             // ربط الـ ContextMenuStrip بالـ DataGridView برمجياً
             dgvSpotTypes.ContextMenuStrip = contextMenuStrip1;
 
             await _RefreshSpotTypesList();
+        }
+
+        private void _SetupGrid()
+        {
+            dgvSpotTypes.AutoGenerateColumns = false;
+            dgvSpotTypes.Columns.Clear();
+            dgvSpotTypes.ReadOnly = true;
+            dgvSpotTypes.AllowUserToAddRows = false;
+            dgvSpotTypes.AllowUserToDeleteRows = false;
+            dgvSpotTypes.AllowUserToResizeRows = false;
+            dgvSpotTypes.RowHeadersVisible = false;
+            dgvSpotTypes.MultiSelect = false;
+            dgvSpotTypes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvSpotTypes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            dgvSpotTypes.Columns.Add(new DataGridViewTextBoxColumn
+            { Name = "SpotTypeId", HeaderText = "ID", DataPropertyName = "SpotTypeId", FillWeight = 10 });
+
+            dgvSpotTypes.Columns.Add(new DataGridViewTextBoxColumn
+            { Name = "SpotTypeName", HeaderText = "Spot Type Name", DataPropertyName = "SpotTypeName", FillWeight = 30 });
+
+            dgvSpotTypes.Columns.Add(new DataGridViewTextBoxColumn
+            { Name = "PricePerHour", HeaderText = "Price Per Hour", DataPropertyName = "PricePerHour", FillWeight = 25 });
+
+            dgvSpotTypes.Columns.Add(new DataGridViewCheckBoxColumn
+            { Name = "SpotsCount", HeaderText = "Spots Count", DataPropertyName = "SpotsCount", FillWeight = 20 });
+            
+            // الزر الأيمن يحدد الصف تحت المؤشر قبل فتح القائمة
+            dgvSpotTypes.CellMouseDown += (s, e) =>
+            {
+                if (e.Button == MouseButtons.Right && e.RowIndex >= 0)
+                {
+                    dgvSpotTypes.ClearSelection();
+                    dgvSpotTypes.Rows[e.RowIndex].Selected = true;
+                    dgvSpotTypes.CurrentCell = dgvSpotTypes.Rows[e.RowIndex].Cells[0];
+                }
+            };
         }
 
         private async Task _RefreshSpotTypesList()
@@ -81,11 +119,6 @@ namespace PlayZone
                     MessageBox.Show("Failed to delete spot type.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-        }
-
-        private void dgvSpotTypes_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
         }
     }
 }

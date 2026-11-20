@@ -74,7 +74,7 @@ namespace PlayZone_Buisness
             return false;
         }
 
-        public static async Task<List<SpotTypeDTO>> GetAllSpotTypesAsync()
+        public static async Task<List<SpotTypesListDTO>> GetAllSpotTypesAsync()
         {
             return await SpotTypeData.GetAllAsync();
         }

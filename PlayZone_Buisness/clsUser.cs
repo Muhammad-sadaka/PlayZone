@@ -87,7 +87,7 @@ namespace PlayZone_Buisness
             return false;
         }
 
-        public static async Task<List<UserDTO>> GetAllUsersAsync()
+        public static async Task<List<UsersListDTO>> GetAllUsersAsync()
         {
             return await UserData.GetAllAsync();
         }

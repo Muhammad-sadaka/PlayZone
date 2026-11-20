@@ -53,7 +53,7 @@ namespace PlayZone
             { Name = "Price", HeaderText = "Price", DataPropertyName = "Price", FillWeight = 15,
               DefaultCellStyle = new DataGridViewCellStyle { Format = "0.00" } });
             dgvProducts.Columns.Add(new DataGridViewTextBoxColumn
-            { Name = "Quantity", HeaderText = "In Stock", DataPropertyName = "Quantity", FillWeight = 15 });
+            { Name = "StockQuantity", HeaderText = "In Stock", DataPropertyName = "StockQuantity", FillWeight = 15 });
             dgvProducts.Columns.Add(new DataGridViewTextBoxColumn
             { Name = "Status", HeaderText = "Status", FillWeight = 20 });
 

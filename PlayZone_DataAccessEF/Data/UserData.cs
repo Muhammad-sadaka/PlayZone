@@ -17,12 +17,20 @@ namespace PlayZone_DataAccessEF.Data
 {
     public static class UserData
     {
-        public static async Task<List<UserDTO>> GetAllAsync()
+        public static async Task<List<UsersListDTO>> GetAllAsync()
         {
             using var context = new PlayZoneContext();
-            return await context.Users
-                .Select(u => new UserDTO(u.UserId, u.Username, u.PasswordHash, u.RoleId ,u.IsActive))
-                .ToListAsync();
+            return await context.Roles.Join(context.Users,
+                   Roles => Roles.RoleId,
+                   Users => Users.RoleId,
+                    (Roles, Users) => new UsersListDTO
+                    (
+                        Users.UserId,
+                        Users.Username,
+                        Roles.RoleName,
+                        Users.IsActive
+                    )
+                ).ToListAsync();
         }
 
         public static async Task<UserDTO?> GetByIdAsync(int id)

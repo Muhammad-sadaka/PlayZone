@@ -30,31 +30,37 @@ namespace PlayZone
         // ============ الأعمدة ============
         private async Task _SetupColumnsAsync()
         {
-            dgvSpots.ReadOnly = false;
-            dgvSpots.EditMode = DataGridViewEditMode.EditOnEnter;
-            dgvSpots.AllowUserToAddRows = false;
             dgvSpots.AutoGenerateColumns = false;
             dgvSpots.Columns.Clear();
+            dgvSpots.AllowUserToAddRows = false;
+            dgvSpots.AllowUserToDeleteRows = false;
+            dgvSpots.AllowUserToResizeRows = false;
+            dgvSpots.RowHeadersVisible = false;
+            dgvSpots.MultiSelect = false;
+            dgvSpots.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvSpots.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvSpots.ReadOnly = false;
+            dgvSpots.EditMode = DataGridViewEditMode.EditOnEnter;
+            dgvSpots.AutoGenerateColumns = false;
 
-            // 1) Spot ID
             dgvSpots.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "SpotID",
                 HeaderText = "Spot ID",
                 DataPropertyName = "SpotID",
-                ReadOnly = true
+                ReadOnly = true,
+                FillWeight = 10
             });
 
-            // 2) Spot Name
             dgvSpots.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "SpotName",
                 HeaderText = "Spot Name",
                 DataPropertyName = "SpotName",
-                ReadOnly = true
+                ReadOnly = true,
+                FillWeight = 30
             });
 
-            // 3) Spot Type (ComboBox من جدول SpotTypes)
             dgvSpots.Columns.Add(new DataGridViewComboBoxColumn
             {
                 Name = "SpotTypeId",
@@ -64,17 +70,23 @@ namespace PlayZone
                 DisplayMember = "SpotTypeName",
                 ValueMember = "SpotTypeID",
                 FlatStyle = FlatStyle.Flat,
-                DisplayStyle = DataGridViewComboBoxDisplayStyle.DropDownButton
+                DisplayStyle = DataGridViewComboBoxDisplayStyle.DropDownButton,
+                FillWeight = 30
+            
             });
 
-            // 4) Active
             dgvSpots.Columns.Add(new DataGridViewCheckBoxColumn
+            { Name = "Active", HeaderText = "Active", DataPropertyName = "Active", FlatStyle = FlatStyle.Flat, FillWeight = 10 });
+
+            dgvSpots.CellMouseDown += (s, e) =>
             {
-                Name = "Active",
-                HeaderText = "Active",
-                DataPropertyName = "Active",
-                FlatStyle = FlatStyle.Flat
-            });
+                if (e.Button == MouseButtons.Right && e.RowIndex >= 0)
+                {
+                    dgvSpots.ClearSelection();
+                    dgvSpots.Rows[e.RowIndex].Selected = true;
+                    dgvSpots.CurrentCell = dgvSpots.Rows[e.RowIndex].Cells[0];
+                }
+            };
         }
 
         // ============ تحميل البيانات ============
@@ -112,7 +124,7 @@ namespace PlayZone
 
             if (isChecked)
             {
-                using (var pen = new Pen(Color.DodgerBlue, 2.5f))
+                using (var pen = new Pen(Color.DarkBlue, 2.5f))
                 {
                     Point[] points =
                     {
